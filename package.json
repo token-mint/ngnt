@@ -1,0 +1,21 @@
+{
+  "name": "ngnt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@0x/contracts-utils": "^3.2.4",
+    "@openzeppelin/network": "^0.2.10"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts-ethereum-package": "^2.3.0",
+    "@openzeppelin/gsn-helpers": "^0.2.0",
+    "@openzeppelin/upgrades": "^2.5.3"
+  }
+}
