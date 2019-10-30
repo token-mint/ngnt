@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
 
 import "./Ownable.sol";
@@ -24,7 +24,7 @@ contract Pausable is Ownable {
      * @dev throws if called by any account other than the pauser
      */
     modifier onlyPauser() {
-        require(_msgSender() == pauser);
+        require(msg.sender == pauser);
         _;
     }
 

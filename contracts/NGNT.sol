@@ -7,9 +7,9 @@ import "@0x/contracts-utils/contracts/src/LibBytes.sol";
 
 import './Ownable.sol';
 import './Blacklistable.sol';
-import "./Pausable.sol";
+import './Pausable.sol';
 
-contract NGNT is GSNRecipient, Ownable, ERC20, Pauseable, Blacklistable {
+contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     using SafeMath for uint256;
 
     string public name;
@@ -35,9 +35,9 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pauseable, Blacklistable {
     event MasterMinterChanged(address indexed newMasterMinter);
 
     function initialize(
-        string _name,
-        string _symbol,
-        string _currency,
+        string memory _name,
+        string memory _symbol,
+        string memory _currency,
         uint8 _decimals,
         address _masterMinter,
         address _pauser,
@@ -88,7 +88,7 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pauseable, Blacklistable {
         balances[_to] = balances[_to].add(_amount);
         minterAllowed[_msgSender()] = mintingAllowedAmount.sub(_amount);
         emit Mint(_msgSender(), _to, _amount);
-        emit Transfer(0x0, _to, _amount);
+        emit Transfer(address(0), _to, _amount);
         return true;
     }
 
@@ -233,7 +233,7 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pauseable, Blacklistable {
         emit MasterMinterChanged(masterMinter);
     }
 
-    function updateGsnFee(uint265 _newGsnFee) onlyOwner public {
+    function updateGsnFee(uint256 _newGsnFee) onlyOwner public {
         require(_newGsnFee != 0);
         uint256 oldFee = gsnFee;
         gsnFee = _newGsnFee;
@@ -245,26 +245,26 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pauseable, Blacklistable {
 
         if (calldataSelector == this.transfer.selector) {
             uint256 valuePlusGsnFee = gsnFee.add(uint(LibBytes.readBytes32(encodedFunction, 36)));
-            return relayedCallBalanceCheck(valuePlusGsnFee, balances[_msgSender()]);
+            if (valuePlusGsnFee > balances[_msgSender()]) {
+                return _rejectRelayedCall(0);
+            } else {
+                return _approveRelayedCall();
+            }
         } else if (calldataSelector == this.transferFrom.selector || calldataSelector == this.approve.selector) {
-            return relayedCallBalanceCheck(gsnFee, balances[_msgSender()]);
+            if (gsnFee > balances[_msgSender()]) {
+                return _rejectRelayedCall(0);
+            } else {
+                return _approveRelayedCall();
+            }
         } else {
             return _rejectRelayedCall(0);
         }
 
-    }
-
-    function relayedCallBalanceCheck(uint256 value, uint balance) internal returns (uint256, bytes memory){
-        if (value > balance) {
-            return _rejectRelayedCall(0);
-        } else {
-            return _approveRelayedCall();
-        }
     }
 
     function postRelayedCall(bytes calldata context, bool success, uint actualCharge, bytes32 preRetVal) external {
         balances[_msgSender()] = balances[_msgSender()].sub(gsnFee);
-        balances[owner()] = balances[owner].add(gsnFee);
+        balances[owner()] = balances[owner()].add(gsnFee);
         emit GSNFeeCharged(gsnFee, _msgSender());
     }
 

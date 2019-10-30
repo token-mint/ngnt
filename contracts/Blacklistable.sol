@@ -20,7 +20,7 @@ contract Blacklistable is Ownable {
      * @dev Throws if called by any account other than the blacklister
     */
     modifier onlyBlacklister() {
-        require(_msgSender() == blacklister);
+        require(msg.sender == blacklister);
         _;
     }
 

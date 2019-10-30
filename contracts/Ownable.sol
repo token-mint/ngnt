@@ -1,5 +1,7 @@
 pragma solidity ^0.5.0;
 
+import "@openzeppelin/contracts-ethereum-package/contracts/GSN/GSNRecipient.sol";
+
 
 contract Ownable {
 
@@ -17,7 +19,7 @@ contract Ownable {
     * @dev The constructor sets the original owner of the contract to the sender account.
     */
     constructor() public {
-        setOwner(_msgSender());
+        setOwner(msg.sender);
     }
 
     /**
@@ -39,7 +41,7 @@ contract Ownable {
     * @dev Throws if called by any account other than the owner.
     */
     modifier onlyOwner() {
-        require(_msgSender() == owner());
+        require(msg.sender == owner());
         _;
     }
 
