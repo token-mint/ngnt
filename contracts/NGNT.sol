@@ -45,11 +45,11 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         address _owner,
         uint256 _gsnFee
     ) public {
-        require(!initialized);
-        require(_masterMinter != address(0));
-        require(_pauser != address(0));
-        require(_blacklister != address(0));
-        require(_owner != address(0));
+        require(!initialized, "Contract is not initialized.");
+        require(_masterMinter != address(0), "Master minter address must be burned token address.");
+        require(_pauser != address(0), "Pauser address must be burned token address.");
+        require(_blacklister != address(0), "Blacklister address must be burned token address.");
+        require(_owner != address(0), "Owner address must be burned token address.");
 
         name = _name;
         symbol = _symbol;
@@ -67,7 +67,7 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
       * @dev Throws if called by any account other than a minter
     */
     modifier onlyMinters() {
-        require(minters[_msgSender()] == true);
+        require(minters[_msgSender()] == true, "Calling address is not a minter.");
         _;
     }
 
@@ -77,12 +77,17 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * @param _amount The amount of tokens to mint. Must be less than or equal to the minterAllowance of the caller.
      * @return A boolean that indicates if the operation was successful.
     */
-    function mint(address _to, uint256 _amount) whenNotPaused onlyMinters notBlacklisted(_msgSender()) notBlacklisted(_to) public returns (bool) {
-        require(_to != address(0));
-        require(_amount > 0);
+    function mint(address _to, uint256 _amount) public
+    whenNotPaused
+    onlyMinters
+    notBlacklisted(_msgSender())
+    notBlacklisted(_to)
+    returns (bool) {
+        require(_to != address(0), "Receiving address must not be burned tokens address.");
+        require(_amount > 0, "Amount to be minted must be greater than zero.");
 
         uint256 mintingAllowedAmount = minterAllowed[_msgSender()];
-        require(_amount <= mintingAllowedAmount);
+        require(_amount <= mintingAllowedAmount, "Amount to be minted must not be greater than allowed mintable amount.");
 
         totalSupply_ = totalSupply_.add(_amount);
         balances[_to] = balances[_to].add(_amount);
@@ -96,7 +101,7 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * @dev Throws if called by any account other than the masterMinter
     */
     modifier onlyMasterMinter() {
-        require(_msgSender() == masterMinter);
+        require(_msgSender() == masterMinter, "This function can only be called by the master minter.");
         _;
     }
 
@@ -144,7 +149,11 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * @dev Adds blacklisted check to approve
      * @return True if the operation was successful.
     */
-    function approve(address _spender, uint256 _value) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_spender) public returns (bool) {
+    function approve(address _spender, uint256 _value) public
+    whenNotPaused
+    notBlacklisted(_msgSender())
+    notBlacklisted(_spender)
+    returns (bool) {
         allowed[_msgSender()][_spender] = _value;
         emit Approval(_msgSender(), _spender, _value);
         return true;
@@ -157,10 +166,14 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * @param _value uint256 the amount of tokens to be transferred
      * @return bool success
     */
-    function transferFrom(address _from, address _to, uint256 _value) whenNotPaused notBlacklisted(_to) notBlacklisted(_msgSender()) notBlacklisted(_from) public returns (bool) {
-        require(_to != address(0));
-        require(_value <= balances[_from]);
-        require(_value <= allowed[_from][_msgSender()]);
+    function transferFrom(address _from, address _to, uint256 _value) public
+    whenNotPaused
+    notBlacklisted(_to)
+    notBlacklisted(_msgSender())
+    notBlacklisted(_from)  returns (bool) {
+        require(_to != address(0), "Receiving address must not be burned token address.");
+        require(_value <= balances[_from], "Amount to be sent must not be greater than sending account balance.");
+        require(_value <= allowed[_from][_msgSender()], "Amount to be sent must not be greater than allowable balance.");
 
         balances[_from] = balances[_from].sub(_value);
         balances[_to] = balances[_to].add(_value);
@@ -175,9 +188,13 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * @param _value The amount to be transferred.
      * @return bool success
     */
-    function transfer(address _to, uint256 _value) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_to) public returns (bool) {
-        require(_to != address(0));
-        require(_value <= balances[_msgSender()]);
+    function transfer(address _to, uint256 _value) public
+    whenNotPaused
+    notBlacklisted(_msgSender())
+    notBlacklisted(_to)
+    returns (bool) {
+        require(_to != address(0), "Receiving address must not be burned token address.");
+        require(_value <= balances[_msgSender()], "Amount to be sent must not be greater than sending account balance.");
 
         balances[_msgSender()] = balances[_msgSender()].sub(_value);
         balances[_to] = balances[_to].add(_value);
@@ -191,7 +208,10 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * @param minterAllowedAmount The minting amount allowed for the minter
      * @return True if the operation was successful.
     */
-    function configureMinter(address minter, uint256 minterAllowedAmount) whenNotPaused onlyMasterMinter public returns (bool) {
+    function configureMinter(address minter, uint256 minterAllowedAmount) public
+    whenNotPaused
+    onlyMasterMinter
+    returns (bool) {
         minters[minter] = true;
         minterAllowed[minter] = minterAllowedAmount;
         emit MinterConfigured(minter, minterAllowedAmount);
@@ -203,7 +223,9 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * @param minter The address of the minter to remove
      * @return True if the operation was successful.
     */
-    function removeMinter(address minter) onlyMasterMinter public returns (bool) {
+    function removeMinter(address minter) public
+    onlyMasterMinter
+    returns (bool) {
         minters[minter] = false;
         minterAllowed[minter] = 0;
         emit MinterRemoved(minter);
@@ -216,10 +238,13 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * amount is less than or equal to the minter's account balance
      * @param _amount uint256 the amount of tokens to be burned
     */
-    function burn(uint256 _amount) whenNotPaused onlyMinters notBlacklisted(_msgSender()) public {
+    function burn(uint256 _amount) public
+    whenNotPaused
+    onlyMinters
+    notBlacklisted(_msgSender())  {
         uint256 balance = balances[_msgSender()];
-        require(_amount > 0);
-        require(balance >= _amount);
+        require(_amount > 0, "Amount to be burned must be greater than 0.");
+        require(balance >= _amount, "Amount to be burned must not be greater than account balance.");
 
         totalSupply_ = totalSupply_.sub(_amount);
         balances[_msgSender()] = balance.sub(_amount);
@@ -227,20 +252,32 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         emit Transfer(_msgSender(), address(0), _amount);
     }
 
-    function updateMasterMinter(address _newMasterMinter) onlyOwner public {
-        require(_newMasterMinter != address(0));
+    function updateMasterMinter(address _newMasterMinter) public
+    onlyOwner {
+        require(_newMasterMinter != address(0), "New master minter address must not be burned token address.");
         masterMinter = _newMasterMinter;
         emit MasterMinterChanged(masterMinter);
     }
 
-    function updateGsnFee(uint256 _newGsnFee) onlyOwner public {
-        require(_newGsnFee != 0);
+    function updateGsnFee(uint256 _newGsnFee) public
+    onlyOwner  {
+        require(_newGsnFee != 0, "Gns fee must not be 0.");
         uint256 oldFee = gsnFee;
         gsnFee = _newGsnFee;
         emit GSNFeeUpdated(oldFee, gsnFee);
     }
 
-    function acceptRelayedCall(address relay, address from, bytes calldata encodedFunction, uint256 transactionFee, uint256 gasPrice, uint256 gasLimit, uint256 nonce, bytes calldata approvalData, uint256 maxPossibleCharge) external view returns (uint256, bytes memory) {
+    function acceptRelayedCall(address relay,
+        address from,
+        bytes calldata encodedFunction,
+        uint256 transactionFee,
+        uint256 gasPrice,
+        uint256 gasLimit,
+        uint256 nonce,
+        bytes calldata approvalData,
+        uint256 maxPossibleCharge
+    ) external view
+    returns (uint256, bytes memory) {
         bytes4 calldataSelector = LibBytes.readBytes4(encodedFunction, 0);
 
         if (calldataSelector == this.transfer.selector) {
