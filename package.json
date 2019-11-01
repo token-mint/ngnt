@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "truffle test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@0x/contracts-utils": "^3.2.4",
-    "@openzeppelin/network": "^0.2.10"
+    "@openzeppelin/cli": "^2.5.3",
+    "@openzeppelin/network": "^0.2.10",
+    "chai": "^4.2.0",
+    "truffle": "^5.0.43"
   },
   "devDependencies": {
     "@openzeppelin/contracts-ethereum-package": "^2.3.0",
