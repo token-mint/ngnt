@@ -49,7 +49,7 @@ Details about deployment and upgrading can be found [here](./docs/deployment.md)
 
 ## Other Capabilities
 
-The capabilites touched on below are a clone from Centre's [USDC](https://www.centre.io/usdc)'s token design 
+The capabilites touched on below are a clone from Centre's [USDC](https://www.centre.io/usdc) token design 
 as at [this commit](https://github.com/centrehq/centre-tokens/commit/3ba876b5e96eec6955733e7e008d85f419ec44a5) (from the master branch).
 
 ### ERC20 compatible
