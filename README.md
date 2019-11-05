@@ -22,7 +22,7 @@ More on this below.
 ## NGNT
 
 The main contract `NGNT.sol` implements the ERC20 interface. It also offers other abilities, which will be briefly explained below.
-There are more [detailed design docs](./doc/tokendesign.md) in the `doc` folder.
+There are more [detailed design docs](./docs/tokendesign.md) in the `docs` folder.
 
 Other things peculiar to the NGNT contract are as follows.
 
