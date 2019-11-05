@@ -13,6 +13,9 @@ import "./Ownable.sol";
  * 3) Removed whenPaused (6/14/2018)
  * 4) Switches ownable library to use zeppelinos (7/12/18)
  * 5) Remove constructor (7/13/18)
+ *
+ * From https://github.com/centrehq/centre-tokens
+ * branch: master commit: 3ba876b5e96eec6955733e7e008d85f419ec44a5
  */
 
 contract Pausable is Ownable {

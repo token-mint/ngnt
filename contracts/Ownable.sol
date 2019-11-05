@@ -7,6 +7,9 @@ pragma solidity ^0.5.0;
  * 1) Add emit prefix to OwnershipTransferred event (7/13/18)
  * 2) Replace constructor with constructor syntax (7/13/18)
  * 3) consolidate OwnableStorage into this contract
+ *
+ * From https://github.com/centrehq/centre-tokens
+ * branch: master commit: 3ba876b5e96eec6955733e7e008d85f419ec44a5
  */
 
 contract Ownable {

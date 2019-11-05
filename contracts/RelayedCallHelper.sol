@@ -9,6 +9,14 @@ library RelayedCallHelper {
     uint256 constant private RELAYED_CALL_ACCEPTED = 0;
     uint256 constant private RELAYED_CALL_REJECTED = 11;
 
+
+    /**
+     * @dev Decides whether to accept or reject a relayed call depending on it's function seletor & the user's balance.
+     * @param encodedRelayedFunction the calldata of the function that's being relayed.
+     * @param permittedFunctionSelectors an array of the transfer, transferFrom & approve selectors (in that order).
+     * @param msgSenderBalance the user/message sender's balance.
+     * @param gsnFee how much the user will be charged in NGNT.
+     */
     function acceptOrReject(
         bytes memory encodedRelayedFunction,
         bytes4[3] memory permittedFunctionSelectors,
