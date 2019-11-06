@@ -4,3 +4,4 @@ package-lock.json
 .idea/
 git .DS_Store
 contracts/.DS_Store
+.env

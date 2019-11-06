@@ -117,7 +117,7 @@ The roles outlined above may be reassigned except for the `admin` role.
 The `owner` role has the ability to reassign all roles (including itself) except for the `admin` role.
 ### Admin
 After deployment (read more [here](./deployment.md)), 
-the admin is immediately set to an address with [`ProxyAdmin.sol`](../contracts/ProxyAdmin.sol) deployed to it. This has no functions to change the admin and prevents the contract from being upgraded more than once.
+the admin is immediately set to an address with [`ProxyAdmin.sol`](https://github.com/buycoinsafrica/one-time-upgrade-proxy-admin/blob/master/contracts/ProxyAdmin.sol) deployed to it. This has no functions to change the admin and prevents the contract from being upgraded more than once.
 ### Master Minter
 - `updateMasterMinter` updates the `masterMinter` role to a new address.
 - `updateMasterMinter` may only be called by the `owner` role.
@@ -131,3 +131,6 @@ the admin is immediately set to an address with [`ProxyAdmin.sol`](../contracts/
 - `transferOwnership` updates the `owner` role to a new address.
 - `transferOwnership` may only be called by the `owner` role. 
 
+The image below might be useful in visualizing the token design in terms of roles and how each contract interacts
+
+![Token Design Schematic](https://res.cloudinary.com/buycoins/image/upload/v1573065220/Paper.Bitkoin.147_2.png)
