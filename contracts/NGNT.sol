@@ -9,7 +9,7 @@ import './Blacklistable.sol';
 import './Pausable.sol';
 import './RelayedCallHelper.sol';
 
-contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
+contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     using SafeMath for uint256;
 
     string public name;
@@ -270,6 +270,6 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
 
 }
 
+contract NGNT is V1 {
 
-
-
+}
