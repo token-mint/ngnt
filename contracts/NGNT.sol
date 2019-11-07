@@ -271,5 +271,5 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
 }
 
 contract NGNT is V1 {
-
+    uint256 version = 2;
 }

@@ -39,7 +39,7 @@ We're currently researching the possibility of an automatic and onchain mechanis
 
 ### Upgradebility
 
-The NGNT token contract will be upgradeable **just once**. This is achieved by restrictions in the [`ProxyAdmin.sol`](https://github.com/buycoinsafrica/one-time-upgrade-proxy-admin/blob/master/contracts/ProxyAdmin.sol) contract that will be deployed and set as the Proxy contract's Admin.
+The NGNT token contract will be upgradeable **just once**. This is achieved by restrictions in the [`ProxyAdmin.sol`](./contracts/ProxyAdmin.sol) contract that will be deployed and set as the Proxy contract's Admin.
 The motivation for this decision is to retain the advantages of the immutability of the smart contracts while still giving us the opportunity to effect any (or all) of the following changes:
 
 1. GSN is still relatively new technology, we think it is a good idea to allow for the opportunity to fix any major vulnerability that may be found.

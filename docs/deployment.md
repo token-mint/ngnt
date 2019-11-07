@@ -17,7 +17,7 @@ There are a few gotchas to keep in mind while using the MultiSigWallet tool:
 
 ### 2. Deploy Proxy Admin Contract
 
-The [Proxy Admin contract](https://github.com/buycoinsafrica/one-time-upgrade-proxy-admin) is one that allows us to limit the amount of times a contract can get upgraded. 
+The [Proxy Admin contract](../contracts/ProxyAdmin.sol) is one that allows us to limit the amount of times a contract can get upgraded. 
 NGNT will only be upgradeable **once**. You can read more on that [here](../README.md#upgradebility).
 
 This contract will be deployed with the `--minimal` flag because we do not need it to be upgradeable. You can read more about this from the [openzepplin-cli docs](https://docs.openzeppelin.com/sdk/2.5/api/cli#create).
