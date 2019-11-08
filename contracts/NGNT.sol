@@ -22,7 +22,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     uint256 public gsnFee;
     mapping(address => uint256) internal balances;
     mapping(address => mapping(address => uint256)) internal allowed;
-    uint256 internal totalSupply_ = 0;
+    uint256 internal totalSupply_;
     mapping(address => bool) internal minters;
     mapping(address => uint256) internal minterAllowed;
 
@@ -271,5 +271,5 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
 }
 
 contract NGNT is V1 {
-    uint256 version = 2;
+
 }

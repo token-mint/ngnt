@@ -15,9 +15,9 @@ pragma solidity ^0.5.0;
 import "@openzeppelin/upgrades/contracts/upgradeability/AdminUpgradeabilityProxy.sol";
 import "@openzeppelin/upgrades/contracts/ownership/Ownable.sol";
 
-contract ProxyAdmin is OpenZeppelinUpgradesOwnable {
-    uint256 public allowedUpgrades = 0;
-    uint256 public upgradeCount = 0;
+contract LimitedUpgradesProxyAdmin is OpenZeppelinUpgradesOwnable {
+    uint256 public allowedUpgrades;
+    uint256 public upgradeCount;
     bool internal initialized;
 
     function initialize(address _owner, uint256 _allowedUpgrades) public {
