@@ -2,7 +2,7 @@
   "manifestVersion": "2.2",
   "contracts": {
     "NGNT": "NGNT",
-    "ProxyAdmin": "ProxyAdmin"
+    "LimitedUpgradesProxyAdmin": "LimitedUpgradesProxyAdmin"
   },
   "dependencies": {},
   "name": "ngnt",
