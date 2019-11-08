@@ -16,15 +16,15 @@ import "@openzeppelin/upgrades/contracts/upgradeability/AdminUpgradeabilityProxy
 import "@openzeppelin/upgrades/contracts/ownership/Ownable.sol";
 
 contract LimitedUpgradesProxyAdmin is OpenZeppelinUpgradesOwnable {
-    uint256 public allowedUpgrades;
-    uint256 public upgradeCount;
+    uint256 public allowedUpgradesPerProxy;
+    mapping(address => uint256) internal upgradeCounts;
     bool internal initialized;
 
-    function initialize(address _owner, uint256 _allowedUpgrades) public {
+    function initialize(address _owner, uint256 _allowedUpgradesPerProxy) public {
         require(!initialized);
 
         _transferOwnership(_owner);
-        allowedUpgrades = _allowedUpgrades;
+        allowedUpgradesPerProxy = _allowedUpgradesPerProxy;
         initialized = true;
     }
 
@@ -59,9 +59,9 @@ contract LimitedUpgradesProxyAdmin is OpenZeppelinUpgradesOwnable {
      * @param implementation the address of the Implementation.
      */
     function upgrade(AdminUpgradeabilityProxy proxy, address implementation) public onlyOwner {
-        require(upgradeCount < allowedUpgrades);
+        require(upgradeCounts[address(proxy)] < allowedUpgradesPerProxy);
         proxy.upgradeTo(implementation);
-        upgradeCount++;
+        upgradeCounts[address(proxy)] += 1;
     }
 
     /**
@@ -74,8 +74,8 @@ contract LimitedUpgradesProxyAdmin is OpenZeppelinUpgradesOwnable {
      * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.
      */
     function upgradeAndCall(AdminUpgradeabilityProxy proxy, address implementation, bytes memory data) payable public onlyOwner {
-        require(upgradeCount < allowedUpgrades);
+        require(upgradeCounts[address(proxy)] < allowedUpgradesPerProxy);
         proxy.upgradeToAndCall.value(msg.value)(implementation, data);
-        upgradeCount++;
+        upgradeCounts[address(proxy)] += 1;
     }
 }
