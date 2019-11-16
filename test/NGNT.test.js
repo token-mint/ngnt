@@ -6,7 +6,7 @@ const NGNT = Contracts.getFromLocal('NGNT');
 
 contract('NGNT', function (accounts) {
     let ngntProxy;
-    const tokenName = 'Nigerian Naira Token';
+    const tokenName = 'Naira Token';
     const symbol = 'NGNT';
     const currency = 'Naira';
     const decimals = 100;
@@ -49,19 +49,22 @@ contract('NGNT', function (accounts) {
         });
     });
 
-    describe('contract should configure a minter', () => {
+    describe('contract functions that should called by master minter only', () => {
         const nonMasterMinter = accounts[9];
         const minter = accounts[3];
         const minterAllowedAmount = 100;
 
         //add test for events later
-        it('contract should not configure minter', async function() {
+        // blocks should ne bases on roles
+        it('contract should not configure minter if function call not from master minter ', async function() {
             expect( async function (){
                 await ngntProxy.methods.configureMinter(minter, minterAllowedAmount).send({
                     from: nonMasterMinter, gas: 50000, gasPrice: 1e6
                 }).to.throw();
             })
         });
+
+        it('conrtact should configure master minter from')
     });
 
 });
