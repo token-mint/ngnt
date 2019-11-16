@@ -1,15 +1,15 @@
 pragma solidity ^0.5.0;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 import "@openzeppelin/contracts-ethereum-package/contracts/GSN/GSNRecipient.sol";
-import "@0x/contracts-utils/contracts/src/LibBytes.sol";
+import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 
 import './Ownable.sol';
 import './Blacklistable.sol';
 import './Pausable.sol';
+import './RelayedCallHelper.sol';
 
-contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
+contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     using SafeMath for uint256;
 
     string public name;
@@ -22,7 +22,7 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     uint256 public gsnFee;
     mapping(address => uint256) internal balances;
     mapping(address => mapping(address => uint256)) internal allowed;
-    uint256 internal totalSupply_ = 0;
+    uint256 internal totalSupply_;
     mapping(address => bool) internal minters;
     mapping(address => uint256) internal minterAllowed;
 
@@ -267,7 +267,8 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         emit GSNFeeUpdated(oldFee, gsnFee);
     }
 
-    function acceptRelayedCall(address relay,
+    function acceptRelayedCall(
+        address relay,
         address from,
         bytes calldata encodedFunction,
         uint256 transactionFee,
@@ -276,30 +277,19 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         uint256 nonce,
         bytes calldata approvalData,
         uint256 maxPossibleCharge
-    ) external view
-    returns (uint256, bytes memory) {
-        bytes4 calldataSelector = LibBytes.readBytes4(encodedFunction, 0);
-
-        if (calldataSelector == this.transfer.selector) {
-            uint256 valuePlusGsnFee = gsnFee.add(uint(LibBytes.readBytes32(encodedFunction, 36)));
-            if (valuePlusGsnFee > balances[_msgSender()]) {
-                return _rejectRelayedCall(0);
-            } else {
-                return _approveRelayedCall();
-            }
-        } else if (calldataSelector == this.transferFrom.selector || calldataSelector == this.approve.selector) {
-            if (gsnFee > balances[_msgSender()]) {
-                return _rejectRelayedCall(0);
-            } else {
-                return _approveRelayedCall();
-            }
-        } else {
-            return _rejectRelayedCall(0);
-        }
-
+    ) external view returns (uint256, bytes memory) {
+        return RelayedCallHelper.acceptOrReject(
+            encodedFunction,
+            [this.transfer.selector, this.transferFrom.selector, this.approve.selector],
+            balances[_msgSender()],
+            gsnFee);
     }
 
-    function postRelayedCall(bytes calldata context, bool success, uint actualCharge, bytes32 preRetVal) external {
+    function postRelayedCall(bytes calldata context,
+        bool success,
+        uint actualCharge,
+        bytes32 preRetVal
+    ) external {
         balances[_msgSender()] = balances[_msgSender()].sub(gsnFee);
         balances[owner()] = balances[owner()].add(gsnFee);
         emit GSNFeeCharged(gsnFee, _msgSender());
@@ -307,6 +297,6 @@ contract NGNT is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
 
 }
 
+contract NGNT is V1 {
 
-
-
+}

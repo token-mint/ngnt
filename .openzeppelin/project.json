@@ -1,13 +1,18 @@
 {
   "manifestVersion": "2.2",
-  "contracts": {},
+  "contracts": {
+    "NGNT": "NGNT",
+    "LimitedUpgradesProxyAdmin": "LimitedUpgradesProxyAdmin"
+  },
   "dependencies": {},
   "name": "ngnt",
   "version": "0.0.1",
   "compiler": {
     "manager": "openzeppelin",
     "compilerSettings": {
-      "optimizer": {}
+      "optimizer": {
+        "enabled": true
+      }
     },
     "solcVersion": "0.5.12"
   }

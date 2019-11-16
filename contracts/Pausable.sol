@@ -3,6 +3,21 @@ pragma solidity ^0.5.0;
 
 import "./Ownable.sol";
 
+/**
+ * @title Pausable
+ * @dev Base contract which allows children to implement an emergency stop mechanism.
+ * Based on openzeppelin tag v1.10.0 commit: feb665136c0dae9912e08397c1a21c4af3651ef3
+ * Modifications:
+ * 1) Added pauser role, switched pause/unpause to be onlyPauser (6/14/2018)
+ * 2) Removed whenNotPause/whenPaused from pause/unpause (6/14/2018)
+ * 3) Removed whenPaused (6/14/2018)
+ * 4) Switches ownable library to use zeppelinos (7/12/18)
+ * 5) Remove constructor (7/13/18)
+ *
+ * From https://github.com/centrehq/centre-tokens
+ * branch: master commit: 3ba876b5e96eec6955733e7e008d85f419ec44a5
+ */
+
 contract Pausable is Ownable {
     event Pause();
     event Unpause();

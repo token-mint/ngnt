@@ -6,6 +6,8 @@ import "./Ownable.sol";
 /**
  * @title Blacklistable Token
  * @dev Allows accounts to be blacklisted by a "blacklister" role
+ * From https://github.com/centrehq/centre-tokens
+ * branch: master commit: 3ba876b5e96eec6955733e7e008d85f419ec44a5
 */
 contract Blacklistable is Ownable {
 
