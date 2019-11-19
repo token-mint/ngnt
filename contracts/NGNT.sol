@@ -7,7 +7,7 @@ import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 import './Ownable.sol';
 import './Blacklistable.sol';
 import './Pausable.sol';
-import './RelayedCallHelper.sol';
+//import './RelayedCallHelper.sol';
 
 contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     using SafeMath for uint256;
@@ -51,6 +51,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         require(_blacklister != address(0), "Blacklister address must be burned token address.");
         require(_owner != address(0), "Owner address must be burned token address.");
 
+        GSNRecipient.initialize();
         name = _name;
         symbol = _symbol;
         currency = _currency;
@@ -260,13 +261,15 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     }
 
     function updateGsnFee(uint256 _newGsnFee) public
-    onlyOwner  {
+    //onlyOwner  
+    {
         require(_newGsnFee != 0, "Gns fee must not be 0.");
         uint256 oldFee = gsnFee;
         gsnFee = _newGsnFee;
         emit GSNFeeUpdated(oldFee, gsnFee);
     }
 
+    event RelayedCall(string message);
     function acceptRelayedCall(
         address relay,
         address from,
@@ -278,11 +281,12 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         bytes calldata approvalData,
         uint256 maxPossibleCharge
     ) external view returns (uint256, bytes memory) {
-        return RelayedCallHelper.acceptOrReject(
-            encodedFunction,
-            [this.transfer.selector, this.transferFrom.selector, this.approve.selector],
-            balances[_msgSender()],
-            gsnFee);
+        return _approveRelayedCall();
+        // return RelayedCallHelper.acceptOrReject(
+        //     encodedFunction,
+        //     [this.transfer.selector, this.transferFrom.selector, this.approve.selector],
+        //     balances[_msgSender()],
+        //     gsnFee);
     }
 
     function postRelayedCall(bytes calldata context,

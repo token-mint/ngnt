@@ -14,11 +14,14 @@
     "@openzeppelin/cli": "^2.5.3",
     "@openzeppelin/network": "^0.2.10",
     "chai": "^4.2.0",
+    "ethers": "^4.0.39",
+    "ganache-core": "^2.8.0",
     "truffle": "^5.0.43"
   },
   "devDependencies": {
     "@openzeppelin/contracts-ethereum-package": "^2.3.0",
-    "@openzeppelin/gsn-helpers": "^0.2.0",
+    "@openzeppelin/gsn-helpers": "^0.2.1",
+    "@openzeppelin/test-helpers": "^0.5.4",
     "@openzeppelin/upgrades": "^2.5.3",
     "@truffle/hdwallet-provider": "^1.0.23",
     "dotenv": "^8.2.0"
