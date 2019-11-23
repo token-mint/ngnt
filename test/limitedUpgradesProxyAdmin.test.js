@@ -107,7 +107,7 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
     context('Test limited Upgrades Proxy Admin upgradeAndCall function', function () {
         let previousProxyAddress;
         let newImplementationAddress;
-        let encodedInitializerFunction = web3.eth.abi.encodeFunctionCall({
+        let encodedTotalSupplyFunction = web3.eth.abi.encodeFunctionCall({
             "name": "totalSupply",
             "type": "function",
             "inputs": [],
@@ -126,7 +126,7 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
                 ngnt = await NGNT.new({from: accounts[1], gas: 4600000});
                 newImplementationAddress = ngnt.options.address;
 
-                await limitedUpgradesProxyAdmin.methods.upgradeAndCall(previousProxyAddress, newImplementationAddress, encodedInitializerFunction).send({
+                await limitedUpgradesProxyAdmin.methods.upgradeAndCall(previousProxyAddress, newImplementationAddress, encodedTotalSupplyFunction).send({
                     from: owner, gas: 4600000, gasPrice: 1e6
                 });
             }
@@ -135,7 +135,7 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
             newImplementationAddress = ngnt.options.address;
 
             expect( async function (){
-                await limitedUpgradesProxyAdmin.methods.upgrade(previousProxyAddress, newImplementationAddress, encodedInitializerFunction).send({
+                await limitedUpgradesProxyAdmin.methods.upgrade(previousProxyAddress, newImplementationAddress, encodedTotalSupplyFunction).send({
                     from: owner, gas: 4600000, gasPrice: 1e6
                 }).to.throw();
             })
@@ -144,7 +144,7 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
         it('should not call upgradableAndCall by non contract owner', async () => {
             const notOwner = accounts[3];
             expect( async function (){
-                await limitedUpgradesProxyAdmin.methods.upgradeAndCall(previousProxyAddress, newImplementationAddress, encodedInitializerFunction).send({
+                await limitedUpgradesProxyAdmin.methods.upgradeAndCall(previousProxyAddress, newImplementationAddress, encodedTotalSupplyFunction).send({
                     from: notOwner, gas: 4600000, gasPrice: 1e6
                 }).to.throw();
             })
