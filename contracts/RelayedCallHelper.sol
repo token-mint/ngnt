@@ -23,24 +23,24 @@ library RelayedCallHelper {
         uint256 msgSenderBalance,
         uint256 gsnFee
     ) public pure returns (uint256, bytes memory) {
-//        bytes4 calldataSelector = LibBytes.readBytes4(encodedRelayedFunction, 0);
-//
-//        if (calldataSelector == permittedFunctionSelectors[0]) {
-//            uint256 valuePlusGsnFee = gsnFee.add(uint(LibBytes.readBytes32(encodedRelayedFunction, 36)));
-//            if (valuePlusGsnFee > msgSenderBalance) {
-//                return (12, ""); //_rejectRelayedCall();
-//            } else {
-//                return _approveRelayedCall();
-//            }
-//        } else if (calldataSelector == permittedFunctionSelectors[1] || calldataSelector == permittedFunctionSelectors[2]) {
-//            if (gsnFee > msgSenderBalance) {
-//                return (13, "");//_rejectRelayedCall();
-//            } else {
-//                return _approveRelayedCall();
-//            }
-//        } else {
-//            return _rejectRelayedCall();
-//        }
+        //        bytes4 calldataSelector = LibBytes.readBytes4(encodedRelayedFunction, 0);
+        //
+        //        if (calldataSelector == permittedFunctionSelectors[0]) {
+        //            uint256 valuePlusGsnFee = gsnFee.add(uint(LibBytes.readBytes32(encodedRelayedFunction, 36)));
+        //            if (valuePlusGsnFee > msgSenderBalance) {
+        //                return _rejectRelayedCall();
+        //            } else {
+        //                return _approveRelayedCall();
+        //            }
+        //        } else if (calldataSelector == permittedFunctionSelectors[1] || calldataSelector == permittedFunctionSelectors[2]) {
+        //            if (gsnFee > msgSenderBalance) {
+        //                return _rejectRelayedCall();
+        //            } else {
+        //                return _approveRelayedCall();
+        //            }
+        //        } else {
+        //            return _rejectRelayedCall();
+        //        }
         return _approveRelayedCall();
     }
 
