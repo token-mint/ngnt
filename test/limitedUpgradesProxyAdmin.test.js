@@ -1,5 +1,5 @@
-const { TestHelper } = require('@openzeppelin/cli');
-const { Contracts, ZWeb3} = require('@openzeppelin/upgrades');
+const {TestHelper} = require('@openzeppelin/cli');
+const {Contracts, ZWeb3} = require('@openzeppelin/upgrades');
 
 ZWeb3.initialize(web3.currentProvider);
 const NGNT = Contracts.getFromLocal('NGNT');
@@ -25,24 +25,23 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
     const owner = accounts[0];
     const gsnFee = 10;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
         project = await TestHelper();
         numberOfUpgrades = chance.integer({min: 1, max: 10});
         limitedUpgradesProxyAdmin = await project.createMinimalProxy(LimitedUpgradesProxyAdmin, {
             initMethod: 'initialize',
-            initArgs: [ owner, numberOfUpgrades]
+            initArgs: [owner, numberOfUpgrades]
         });
-
         const adminAddress = limitedUpgradesProxyAdmin.options.address;
         ngntProxy = await project.createProxy(NGNT, {
             initMethod: 'initialize',
-            initArgs: [tokenName, symbol, currency , decimals, masterMinter, pauser, blacklister, owner, gsnFee],
+            initArgs: [tokenName, symbol, currency, decimals, masterMinter, pauser, blacklister, owner, gsnFee],
             admin: adminAddress
         });
     });
 
-    describe('contract should be properly initialized',  () => {
-        it('contract should have correct initialization values', async function() {
+    describe('contract should be properly initialized', () => {
+        it('contract should have correct initialization values', async function () {
             const _tokenName = await ngntProxy.methods.name().call();
             const _symbol = await ngntProxy.methods.symbol().call();
             const _currency = await ngntProxy.methods.currency().call();
@@ -54,14 +53,14 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
             const _gsnFee = await ngntProxy.methods.gsnFee().call();
 
             assert.equal(_tokenName, tokenName);
-            assert.equal(_symbol,symbol);
-            assert.equal(_currency,currency);
-            assert.equal(_decimals,decimals);
-            assert.equal(_pauser,pauser);
-            assert.equal(_masterMinter,masterMinter);
-            assert.equal(_blacklister,blacklister);
-            assert.equal(_owner,owner);
-            assert.equal(_gsnFee,gsnFee);
+            assert.equal(_symbol, symbol);
+            assert.equal(_currency, currency);
+            assert.equal(_decimals, decimals);
+            assert.equal(_pauser, pauser);
+            assert.equal(_masterMinter, masterMinter);
+            assert.equal(_blacklister, blacklister);
+            assert.equal(_owner, owner);
+            assert.equal(_gsnFee, gsnFee);
         });
     });
 
@@ -69,12 +68,12 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
         let previousProxyAddress;
         let newImplementationAddress;
 
-        it(`should upgrade proxy admin contract not more than ${numberOfUpgrades} times`, async function() {
+        it(`should upgrade proxy admin contract not more than ${numberOfUpgrades} times`, async function () {
             previousProxyAddress = ngntProxy.options.address;
 
-            for(let upgrades = 1; upgrades <= numberOfUpgrades; upgrades++){
+            for (let upgrades = 1; upgrades <= numberOfUpgrades; upgrades++) {
                 ngnt = await NGNT.new({from: accounts[1], gas: 4600000});
-                await ngnt.methods.initialize(tokenName, symbol, currency , decimals, masterMinter, pauser, blacklister, owner, gsnFee);
+                await ngnt.methods.initialize(tokenName, symbol, currency, decimals, masterMinter, pauser, blacklister, owner, gsnFee);
                 newImplementationAddress = ngnt.options.address;
 
                 await limitedUpgradesProxyAdmin.methods.upgrade(previousProxyAddress, newImplementationAddress).send({
@@ -84,10 +83,10 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
             }
 
             ngnt = await NGNT.new({from: accounts[1], gas: 4600000});
-            await ngnt.methods.initialize(tokenName, symbol, currency , decimals, masterMinter, pauser, blacklister, owner, gsnFee);
+            await ngnt.methods.initialize(tokenName, symbol, currency, decimals, masterMinter, pauser, blacklister, owner, gsnFee);
             newImplementationAddress = ngnt.options.address;
 
-            expect( async function (){
+            expect(async function () {
                 await limitedUpgradesProxyAdmin.methods.upgrade(previousProxyAddress, newImplementationAddress).send({
                     from: owner, gas: 4600000, gasPrice: 1e6
                 }).to.throw();
@@ -96,7 +95,7 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
 
         it('should only be upgradable by owner', async () => {
             const notOwner = accounts[3];
-            expect( async function (){
+            expect(async function () {
                 await limitedUpgradesProxyAdmin.methods.upgrade(previousProxyAddress, newImplementationAddress).send({
                     from: notOwner, gas: 4600000, gasPrice: 1e6
                 }).to.throw();
@@ -119,10 +118,10 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
             ]
         }, []);
 
-        it(`should upgrade proxy admin contract and call encodedFunction not more than ${numberOfUpgrades} times `, async function() {
+        it(`should upgrade proxy admin contract and call encodedFunction not more than ${numberOfUpgrades} times `, async function () {
             previousProxyAddress = ngntProxy.options.address;
 
-            for(let upgrades = 1; upgrades <= numberOfUpgrades; upgrades++) {
+            for (let upgrades = 1; upgrades <= numberOfUpgrades; upgrades++) {
                 ngnt = await NGNT.new({from: accounts[1], gas: 4600000});
                 newImplementationAddress = ngnt.options.address;
 
@@ -134,7 +133,7 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
             ngnt = await NGNT.new({from: accounts[1], gas: 4600000});
             newImplementationAddress = ngnt.options.address;
 
-            expect( async function (){
+            expect(async function () {
                 await limitedUpgradesProxyAdmin.methods.upgrade(previousProxyAddress, newImplementationAddress, encodedTotalSupplyFunction).send({
                     from: owner, gas: 4600000, gasPrice: 1e6
                 }).to.throw();
@@ -143,7 +142,7 @@ contract('LimitedUpgradesProxyAdmin', function (accounts) {
 
         it('should not call upgradableAndCall by non contract owner', async () => {
             const notOwner = accounts[3];
-            expect( async function (){
+            expect(async function () {
                 await limitedUpgradesProxyAdmin.methods.upgradeAndCall(previousProxyAddress, newImplementationAddress, encodedTotalSupplyFunction).send({
                     from: notOwner, gas: 4600000, gasPrice: 1e6
                 }).to.throw();

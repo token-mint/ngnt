@@ -1,10 +1,11 @@
 const {GSNProvider} = require("@openzeppelin/gsn-provider");
 
+
 module.exports = {
     networks: {
         development: {
             provider: function () {
-                return new GSNProvider("http://localhost:8545", { useGSN: false })
+                return new GSNProvider("http://localhost:8545", {useGSN: false})
             },
             network_id: "*",
             gas: 4600000

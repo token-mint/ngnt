@@ -51,6 +51,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         require(_blacklister != address(0));
         require(_owner != address(0));
 
+        GSNRecipient.initialize();
         name = _name;
         symbol = _symbol;
         currency = _currency;
@@ -251,10 +252,12 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         bytes calldata approvalData,
         uint256 maxPossibleCharge
     ) external view returns (uint256, bytes memory) {
+        uint256 userBalance = balanceOf(from);
+
         return RelayedCallHelper.acceptOrReject(
             encodedFunction,
             [this.transfer.selector, this.transferFrom.selector, this.approve.selector],
-            balances[_msgSender()],
+            userBalance,
             gsnFee);
     }
 
@@ -263,10 +266,9 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     //        uint actualCharge,
     //        bytes32 preRetVal
     //    ) external {
-    //        (address from, uint256 maxPossibleCharge) = abi.decode(context, (address, uint256));
-    //        //        balances[_msgSender()] = balances[_msgSender()].sub(gsnFee);
-    //        //        balances[owner()] = balances[owner()].add(gsnFee);
-    //        emit GSNFeeCharged(10, from);
+    //        balances[_msgSender()] = balances[_msgSender()].sub(gsnFee);
+    //        balances[owner()] = balances[owner()].add(gsnFee);
+    //        emit GSNFeeCharged(gsnFee, _msgSender());
     //    }
 
 }
