@@ -5,7 +5,7 @@ const IRelayHub = artifacts.require('IRelayHub');
 
 const NGNT = artifacts.require('NGNT');
 
-contract("NGNT", function (accounts) {
+contract("NGNT with GSN", function (accounts) {
     let ngnt;
     const tokenName = 'Naira Token';
     const symbol = 'NGNT';

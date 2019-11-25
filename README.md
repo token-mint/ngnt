@@ -72,3 +72,6 @@ need the allowance increased again by the `masterMinter`.
 ### Ownable
 The contract has an Owner, who can change the `owner`, `pauser`, `blacklister`, or `masterMinter` addresses. The `owner` can not change
 the `proxyOwner` address.
+
+## Running Tests
+To run the tests, in the project path on your terminal, run `npm test`

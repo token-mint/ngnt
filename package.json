@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "truffle test"
+    "test": "bash script/test.sh"
   },
   "keywords": [],
   "author": "",
