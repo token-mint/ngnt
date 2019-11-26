@@ -63,7 +63,7 @@ contract("NGNT with GSN", function (accounts) {
             await ngnt.mint(minter, mintedAmount, {from: minter});
         });
 
-        it("should transfer the right amount of tokens", async () => {
+        it("should transfer the right amount of tokens and charges the gsnFee", async () => {
             const transferAmount = mintedAmount - gsnFee;
             const recipient = accounts[2];
 
@@ -83,7 +83,7 @@ contract("NGNT with GSN", function (accounts) {
             // TODO: Fix issues with chai bignumber
             // expect(senderNewBalance).to.be.a.bignumber.that.equals(mintedAmount - transferAmount);
             // expect(recipientNewBalance).to.be.a.bignumber.that.equals(recipientPreviousBalance + transferAmount);
-            expect(senderNewBalance.toString()).equals((mintedAmount - transferAmount).toString());
+            expect(senderNewBalance.toString()).equals((mintedAmount - transferAmount - gsnFee).toString());
         });
 
         context('when the sender does not have enough tokens', async () => {
@@ -117,6 +117,7 @@ contract("NGNT with GSN", function (accounts) {
             const allowedAmount = 1000;
             const spender = accounts[4];
 
+            const approverPreviousBalance = await ngnt.balanceOf(minter);
 
             const {tx} = await ngnt.approve(spender, allowedAmount, {
                 from: minter,
@@ -125,11 +126,11 @@ contract("NGNT with GSN", function (accounts) {
 
             await expectEvent.inTransaction(tx, IRelayHub, 'TransactionRelayed', {status: '0'});
 
+            const approverNewBalance = await ngnt.balanceOf(minter);
             const allowance = await ngnt.allowance(minter, spender);
 
             // TODO: Use bignumber equals
             expect(allowance.toString()).equals((allowedAmount).toString());
-
         });
 
         context('when the user does not have up to gsnFee', async () => {
