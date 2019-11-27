@@ -698,3 +698,20 @@
 16:04:19.640055 version@stat F·[] S·0B[] Sc·[]
 16:04:19.687366 db@janitor F·2 G·0
 16:04:19.687401 db@open done T·48.124326ms
+=============== Nov 27, 2019 (WAT) ===============
+10:45:20.382775 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+10:45:20.384240 CURRENT: missing target file: MANIFEST-000021
+10:45:20.387549 CURRENT.bak: missing target file: MANIFEST-000019
+10:45:20.643206 db@open opening
+10:45:20.650237 version@stat F·[] S·0B[] Sc·[]
+10:45:20.810521 db@janitor F·2 G·0
+10:45:20.812083 db@open done T·164.329962ms
+=============== Nov 27, 2019 (WAT) ===============
+10:48:04.035252 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+10:48:04.041561 version@stat F·[] S·0B[] Sc·[]
+10:48:04.046668 db@open opening
+10:48:04.047415 journal@recovery F·1
+10:48:04.059459 journal@recovery recovering @1
+10:48:04.072996 version@stat F·[] S·0B[] Sc·[]
+10:48:04.278788 db@janitor F·2 G·0
+10:48:04.278867 db@open done T·232.148988ms
