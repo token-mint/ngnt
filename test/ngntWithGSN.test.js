@@ -2,6 +2,8 @@ const {registerRelay, deployRelayHub, fundRecipient, balance, runRelayer} = requ
 const {BN, constants, ether, expectEvent, expectRevert} = require('@openzeppelin/test-helpers');
 const gsn = require('@openzeppelin/gsn-helpers');
 const IRelayHub = artifacts.require('IRelayHub');
+const chai = require('chai');
+const expect = chai.expect;
 
 const NGNT = artifacts.require('NGNT');
 
@@ -63,12 +65,11 @@ contract("NGNT with GSN", function (accounts) {
             await ngnt.mint(minter, mintedAmount, {from: minter});
         });
 
-        it("should transfer the right amount of tokens and charges the gsnFee", async () => {
+        it("should transfer the right amount of tokens", async () => {
             const transferAmount = mintedAmount - gsnFee;
             const recipient = accounts[2];
 
             const recipientPreviousBalance = await ngnt.balanceOf(recipient);
-
 
             const {tx} = await ngnt.transfer(recipient, transferAmount, {
                 from: minter,
@@ -80,10 +81,12 @@ contract("NGNT with GSN", function (accounts) {
             const senderNewBalance = await ngnt.balanceOf(minter);
             const recipientNewBalance = await ngnt.balanceOf(recipient);
 
-            // TODO: Fix issues with chai bignumber
-            // expect(senderNewBalance).to.be.a.bignumber.that.equals(mintedAmount - transferAmount);
-            // expect(recipientNewBalance).to.be.a.bignumber.that.equals(recipientPreviousBalance + transferAmount);
-            expect(senderNewBalance.toString()).equals((mintedAmount - transferAmount - gsnFee).toString());
+            const expectedSenderNewBalance = new BN(mintedAmount - transferAmount - gsnFee);
+            const expectedRecipientNewBalance = new BN(recipientPreviousBalance + transferAmount);
+
+
+            expect(senderNewBalance).to.be.bignumber.equal(expectedSenderNewBalance);
+            expect(recipientNewBalance).to.be.bignumber.equal(expectedRecipientNewBalance);
         });
 
         context('when the sender does not have enough tokens', async () => {
@@ -113,24 +116,33 @@ contract("NGNT with GSN", function (accounts) {
             await ngnt.mint(minter, mintedAmount, {from: minter});
         });
 
-        it("should approve spender without any issues", async () => {
-            const allowedAmount = 1000;
-            const spender = accounts[4];
+        context("should approve transactions without issues", async () => {
+            let approverPreviousBalance;
+            let approverNewBalance;
 
-            const approverPreviousBalance = await ngnt.balanceOf(minter);
+            it("should approve spender without any issues", async () => {
+                const allowedAmount = 1000;
+                const spender = accounts[4];
 
-            const {tx} = await ngnt.approve(spender, allowedAmount, {
-                from: minter,
-                useGSN: true
+                approverPreviousBalance = await ngnt.balanceOf(minter);
+
+                const {tx} = await ngnt.approve(spender, allowedAmount, {
+                    from: minter,
+                    useGSN: true
+                });
+
+                await expectEvent.inTransaction(tx, IRelayHub, 'TransactionRelayed', {status: '0'});
+
+                approverNewBalance = await ngnt.balanceOf(minter);
+                const allowance = await ngnt.allowance(minter, spender);
+
+                expect(allowance).to.be.bignumber.equal(allowance);
             });
 
-            await expectEvent.inTransaction(tx, IRelayHub, 'TransactionRelayed', {status: '0'});
-
-            const approverNewBalance = await ngnt.balanceOf(minter);
-            const allowance = await ngnt.allowance(minter, spender);
-
-            // TODO: Use bignumber equals
-            expect(allowance.toString()).equals((allowedAmount).toString());
+            it('should charge approver', async () => {
+                const approvalCharge = approverPreviousBalance - approverNewBalance;
+                expect(approvalCharge).to.equal(gsnFee);
+            })
         });
 
         context('when the user does not have up to gsnFee', async () => {
