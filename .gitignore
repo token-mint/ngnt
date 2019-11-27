@@ -5,3 +5,4 @@ package-lock.json
 git .DS_Store
 contracts/.DS_Store
 .env
+db/

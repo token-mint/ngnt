@@ -3,11 +3,11 @@ pragma solidity ^0.5.0;
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol';
 import "@openzeppelin/contracts-ethereum-package/contracts/GSN/GSNRecipient.sol";
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
+import "@0x/contracts-utils/contracts/src/LibBytes.sol";
 
 import './Ownable.sol';
 import './Blacklistable.sol';
 import './Pausable.sol';
-import './RelayedCallHelper.sol';
 
 contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     using SafeMath for uint256;
@@ -18,6 +18,10 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     string public currency;
     address public masterMinter;
     bool internal initialized;
+
+    enum GSNErrorCodes {
+        INSUFFICIENT_BALANCE, NOT_ALLOWED
+    }
 
     uint256 public gsnFee;
     mapping(address => uint256) internal balances;
@@ -51,6 +55,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         require(_blacklister != address(0));
         require(_owner != address(0));
 
+        GSNRecipient.initialize();
         name = _name;
         symbol = _symbol;
         currency = _currency;
@@ -251,21 +256,40 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         bytes calldata approvalData,
         uint256 maxPossibleCharge
     ) external view returns (uint256, bytes memory) {
-        return RelayedCallHelper.acceptOrReject(
-            encodedFunction,
-            [this.transfer.selector, this.transferFrom.selector, this.approve.selector],
-            balances[_msgSender()],
-            gsnFee);
+        uint256 userBalance = balanceOf(from);
+
+        bytes4 calldataSelector = LibBytes.readBytes4(encodedFunction, 0);
+
+        if (calldataSelector == this.transfer.selector) {
+            uint256 valuePlusGsnFee = gsnFee.add(uint(LibBytes.readBytes32(encodedFunction, 36)));
+
+            if (userBalance >= valuePlusGsnFee) {
+                return _approveRelayedCall(abi.encode(from));
+            } else {
+                return _rejectRelayedCall(uint256(GSNErrorCodes.INSUFFICIENT_BALANCE));
+            }
+        } else if (calldataSelector == this.transferFrom.selector || calldataSelector == this.approve.selector) {
+            if (userBalance >= gsnFee) {
+                return _approveRelayedCall(abi.encode(from));
+            } else {
+                return _rejectRelayedCall(uint256(GSNErrorCodes.INSUFFICIENT_BALANCE));
+            }
+        } else {
+            return _rejectRelayedCall(uint256(GSNErrorCodes.NOT_ALLOWED));
+        }
+
     }
 
-    function postRelayedCall(bytes calldata context,
-        bool success,
-        uint actualCharge,
-        bytes32 preRetVal
-    ) external {
-        balances[_msgSender()] = balances[_msgSender()].sub(gsnFee);
-        balances[owner()] = balances[owner()].add(gsnFee);
-        emit GSNFeeCharged(gsnFee, _msgSender());
+    function _preRelayedCall(bytes memory context) internal returns (bytes32) {
+
+    }
+
+    function _postRelayedCall(bytes memory context, bool, uint256 actualCharge, bytes32) internal {
+        address from = abi.decode(context, (address));
+
+        balances[from] = balances[from].sub(gsnFee);
+        balances[address(this)] = balances[address(this)].add(gsnFee);
+        emit GSNFeeCharged(gsnFee, from);
     }
 
 }
