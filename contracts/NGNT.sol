@@ -161,7 +161,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * @return True if the operation was successful.
     */
     function increaseAllowance(address _spender, uint256 _addedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_spender) public returns (bool) {
-        approve(_msgSender(), _spender, allowed[_msgSender()][_spender].add(_addedValue));
+        _approve(_msgSender(), _spender, allowed[_msgSender()][_spender].add(_addedValue));
         return true;
     }
 
@@ -170,8 +170,21 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * @return True if the operation was successful.
     */
     function decreaseAllowance(address _spender, uint256 _subtractedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_spender) public returns (bool) {
-        approve(_msgSender(), _spender, allowed[_msgSender()][_spender].sub(_subtractedValue));
+        _approve(_msgSender(), _spender, allowed[_msgSender()][_spender].sub(_subtractedValue));
         return true;
+    }
+
+    /**
+     * @dev Sets `amount` as the allowance of `spender` over the `owner`s tokens.
+     *
+     * This is internal function is equivalent to `approve`, and can be used to
+     * e.g. set automatic allowances for certain subsystems, etc.
+     *
+     * Emits an `Approval` event.
+     */
+    function _approve(address owner, address spender, uint256 value) internal {
+        _allowances[owner][spender] = value;
+        emit Approval(owner, spender, value);
     }
 
     /**
