@@ -60,8 +60,8 @@ contract LimitedUpgradesProxyAdmin is OpenZeppelinUpgradesOwnable {
      */
     function upgrade(AdminUpgradeabilityProxy proxy, address implementation) public onlyOwner {
         require(upgradeCounts[address(proxy)] < allowedUpgradesPerProxy);
-        proxy.upgradeTo(implementation);
         upgradeCounts[address(proxy)] += 1;
+        proxy.upgradeTo(implementation);
     }
 
     /**
@@ -75,7 +75,7 @@ contract LimitedUpgradesProxyAdmin is OpenZeppelinUpgradesOwnable {
      */
     function upgradeAndCall(AdminUpgradeabilityProxy proxy, address implementation, bytes memory data) payable public onlyOwner {
         require(upgradeCounts[address(proxy)] < allowedUpgradesPerProxy);
-        proxy.upgradeToAndCall.value(msg.value)(implementation, data);
         upgradeCounts[address(proxy)] += 1;
+        proxy.upgradeToAndCall.value(msg.value)(implementation, data);
     }
 }
