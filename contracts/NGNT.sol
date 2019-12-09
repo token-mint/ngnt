@@ -1,4 +1,4 @@
-pragma solidity 0.5.0;
+pragma solidity 0.5.5;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol';
 import "@openzeppelin/contracts-ethereum-package/contracts/GSN/GSNRecipient.sol";
@@ -183,7 +183,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * Emits an `Approval` event.
      */
     function _approve(address owner, address spender, uint256 value) internal {
-        _allowed[owner][spender] = value;
+        allowed[owner][spender] = value;
         emit Approval(owner, spender, value);
     }
 
