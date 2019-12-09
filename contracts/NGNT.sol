@@ -157,6 +157,24 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     }
 
     /**
+     * @dev Adds blacklisted & not paused check to increaseAllowance
+     * @return True if the operation was successful.
+    */
+    function increaseAllowance(address _spender, uint256 _addedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_spender) public returns (bool) {
+        approve(_msgSender(), _spender, allowed[_msgSender()][_spender].add(_addedValue));
+        return true;
+    }
+
+    /**
+     * @dev Adds blacklisted & not paused check to decreaseAllowance
+     * @return True if the operation was successful.
+    */
+    function decreaseAllowance(address _spender, uint256 _subtractedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_spender) public returns (bool) {
+        approve(_msgSender(), _spender, allowed[_msgSender()][_spender].sub(_subtractedValue));
+        return true;
+    }
+
+    /**
      * @dev Transfer tokens from one address to another.
      * @param _from address The address which you want to send tokens from
      * @param _to address The address which you want to transfer to
