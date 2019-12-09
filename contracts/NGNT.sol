@@ -183,7 +183,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
      * Emits an `Approval` event.
      */
     function _approve(address owner, address spender, uint256 value) internal {
-        _allowances[owner][spender] = value;
+        _allowed[owner][spender] = value;
         emit Approval(owner, spender, value);
     }
 
