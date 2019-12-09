@@ -53,6 +53,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         require(_masterMinter != address(0));
         require(_pauser != address(0));
         require(_blacklister != address(0));
+        require(_blacklister != address(0));
         require(_owner != address(0));
 
         GSNRecipient.initialize();
@@ -240,6 +241,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
 
     function updateGsnFee(uint256 _newGsnFee) onlyOwner public {
         require(_newGsnFee != 0);
+        require(_newGsnFee <= gsnFee.mul(2));
         uint256 oldFee = gsnFee;
         gsnFee = _newGsnFee;
         emit GSNFeeUpdated(oldFee, gsnFee);
