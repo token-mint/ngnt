@@ -11,7 +11,7 @@ NGNT will only be upgradeable **once**. You can read more on that [here](../READ
 This contract will be deployed with the `--minimal` flag because we do not need it to be upgradeable. You can read more about this from the [openzepplin-cli docs](https://docs.openzeppelin.com/sdk/2.5/api/cli#create).
 Upon deployment, the `initalize(address _owner, uint256 allowedUpgrades)` function MUST be called and the arguments should be set as follows:
 
-1. The `_owner` should be an address that will be the transaction sender in step 2 below.
+1. The `_owner` should be an address that will be the transaction sender in step 2 below. This owner address will be able to upgrade the contract.
 2. `allowedUpgrades` should be set to 1.
 
 ### 2. Deploy NGNT Contract
