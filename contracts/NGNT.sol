@@ -263,12 +263,23 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         emit Transfer(_msgSender(), address(0), _amount);
     }
 
+    /**
+     * @dev allows the owner to update the master minter address
+     * Validates that caller is an owner
+     * @param _newMasterMinter the new master minter address
+    */
     function updateMasterMinter(address _newMasterMinter) onlyOwner public {
         require(_newMasterMinter != address(0));
         masterMinter = _newMasterMinter;
         emit MasterMinterChanged(masterMinter);
     }
 
+    /**
+     * @dev allows the owner to update the gsnFee
+     * Validates that caller is an owner
+     * Validates _newGsnFee is not 0 and that its not more than two times old fee
+     * @param _newGsnFee the new gnsFee
+    */
     function updateGsnFee(uint256 _newGsnFee) onlyOwner public {
         require(_newGsnFee != 0);
         require(_newGsnFee <= gsnFee.mul(2));
@@ -277,6 +288,11 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         emit GSNFeeUpdated(oldFee, gsnFee);
     }
 
+    /**
+     * @dev "callback" to determine if a GSN call should be accepted
+     * Validates that call is transfer, approve or transferFrom
+     * Validates that user NGNT balances is enough for the transaction + gsnFee
+    */
     function acceptRelayedCall(
         address relay,
         address from,
@@ -316,6 +332,9 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
 
     }
 
+    /**
+     * @dev "callback" to charge user gsnFee units of NGNT after successful relayed call
+    */
     function _postRelayedCall(bytes memory context, bool, uint256 actualCharge, bytes32) internal {
         address from = abi.decode(context, (address));
 
