@@ -53,7 +53,6 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         require(_masterMinter != address(0));
         require(_pauser != address(0));
         require(_blacklister != address(0));
-        require(_blacklister != address(0));
         require(_owner != address(0));
 
         GSNRecipient.initialize();
