@@ -1,0 +1,190 @@
+{
+  "contracts": {
+    "BEP20": {
+      "address": "0xc68635AFefCf86e7e6DC967062648395F8Ac096a",
+      "constructorCode": "608060405234801561001057600080fd5b50611427806100206000396000f3fe",
+      "bodyBytecodeHash": "8a7ed156f5eae12224b49a69a0a26e784832e69159a77e0d46cbd304d64b7007",
+      "localBytecodeHash": "5c74493ce30bb391a25dd4b5bb79515d56967518e68f3e0b5231aa6d34691621",
+      "deployedBytecodeHash": "5c74493ce30bb391a25dd4b5bb79515d56967518e68f3e0b5231aa6d34691621",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        },
+        "t_array:49<t_uint256>": {
+          "id": "t_array:49<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "49",
+          "kind": "array",
+          "label": "uint256[49]"
+        },
+        "t_mapping<t_uint256>": {
+          "id": "t_mapping<t_uint256>",
+          "valueType": "t_uint256",
+          "label": "mapping(key => uint256)",
+          "kind": "mapping"
+        },
+        "t_string": {
+          "id": "t_string",
+          "kind": "elementary",
+          "label": "string"
+        },
+        "t_uint8": {
+          "id": "t_uint8",
+          "kind": "elementary",
+          "label": "uint8"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol",
+          "label": "_initialized",
+          "astId": 470,
+          "type": "t_bool",
+          "src": "1212:25:2"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol",
+          "label": "_initializing",
+          "astId": 472,
+          "type": "t_bool",
+          "src": "1340:26:2"
+        },
+        {
+          "contract": "ContextUpgradeable",
+          "path": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+          "label": "__gap",
+          "astId": 805,
+          "type": "t_array:50<t_uint256>",
+          "src": "1173:25:4"
+        },
+        {
+          "contract": "OwnableUpgradeable",
+          "path": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+          "label": "_owner",
+          "astId": 9,
+          "type": "t_address",
+          "src": "720:22:0"
+        },
+        {
+          "contract": "OwnableUpgradeable",
+          "path": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+          "label": "__gap",
+          "astId": 123,
+          "type": "t_array:49<t_uint256>",
+          "src": "2506:25:0"
+        },
+        {
+          "contract": "BEP20",
+          "path": "contracts/BEP20.sol",
+          "label": "_balances",
+          "astId": 823,
+          "type": "t_mapping<t_uint256>",
+          "src": "439:46:5"
+        },
+        {
+          "contract": "BEP20",
+          "path": "contracts/BEP20.sol",
+          "label": "_allowances",
+          "astId": 829,
+          "type": "t_mapping<t_uint256>",
+          "src": "491:69:5"
+        },
+        {
+          "contract": "BEP20",
+          "path": "contracts/BEP20.sol",
+          "label": "_totalSupply",
+          "astId": 831,
+          "type": "t_uint256",
+          "src": "566:28:5"
+        },
+        {
+          "contract": "BEP20",
+          "path": "contracts/BEP20.sol",
+          "label": "_name",
+          "astId": 833,
+          "type": "t_string",
+          "src": "600:20:5"
+        },
+        {
+          "contract": "BEP20",
+          "path": "contracts/BEP20.sol",
+          "label": "_symbol",
+          "astId": 835,
+          "type": "t_string",
+          "src": "626:22:5"
+        },
+        {
+          "contract": "BEP20",
+          "path": "contracts/BEP20.sol",
+          "label": "_decimals",
+          "astId": 837,
+          "type": "t_uint8",
+          "src": "654:23:5"
+        },
+        {
+          "contract": "BEP20",
+          "path": "contracts/BEP20.sol",
+          "label": "_owner",
+          "astId": 839,
+          "type": "t_address",
+          "src": "684:22:5"
+        },
+        {
+          "contract": "BEP20",
+          "path": "contracts/BEP20.sol",
+          "label": "_mintable",
+          "astId": 847,
+          "type": "t_bool",
+          "src": "802:22:5"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": [],
+        "storageUncheckedVars": [],
+        "storageDiff": []
+      }
+    }
+  },
+  "solidityLibs": {},
+  "proxies": {
+    "ngnt/BEP20": [
+      {
+        "address": "0xA125a19730cCE78EA4C531Ab0765049b90bCC91a",
+        "version": "0.0.1",
+        "implementation": "0xc68635AFefCf86e7e6DC967062648395F8Ac096a",
+        "admin": "0x499aEC54E8189a82465459c03D8D635eDdFC353b",
+        "kind": "Upgradeable"
+      }
+    ]
+  },
+  "manifestVersion": "2.2",
+  "version": "0.0.1",
+  "proxyAdmin": {
+    "address": "0x499aEC54E8189a82465459c03D8D635eDdFC353b"
+  }
+}

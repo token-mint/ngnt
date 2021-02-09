@@ -1,5 +1,6 @@
+require("dotenv").config()
 const {GSNProvider} = require("@openzeppelin/gsn-provider");
-
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 module.exports = {
     networks: {
@@ -10,6 +11,15 @@ module.exports = {
             network_id: "*",
             gas: 4600000
         },
+        bsctestnet: {
+            provider: () =>
+              new HDWalletProvider(
+                process.env.MNEMONIC,
+                `https://data-seed-prebsc-1-s1.binance.org:8545`
+              ),
+            networkId: 97,
+            gasPrice: 25000000000,
+          }
     },
 
     compilers: {
