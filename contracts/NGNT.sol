@@ -10,7 +10,7 @@ import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 //import "@openzeppelin/contracts-ethereum-package/contracts/GSN/GSNRecipient.sol";
 //import "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol";
 
-contract BEP20 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
+contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     using SafeMathUpgradeable for uint256;
 
     mapping (address => uint256) private _balances;
@@ -315,4 +315,7 @@ contract BEP20 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         _burn(account, amount);
         _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "BEP20: burn amount exceeds allowance"));
     }
+}
+
+contract NGNT is V1 {
 }

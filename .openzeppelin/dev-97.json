@@ -1,7 +1,7 @@
 {
   "contracts": {
-    "BEP20": {
-      "address": "0xaEC2B3d4Af264a919003d2C36B1b4AcffC771476",
+    "NGNT": {
+      "address": "0xd8E3a0dbF2a71512FEF82eeC225B9a74837a5F8a",
       "constructorCode": "608060405234801561001057600080fd5b506118e2806100206000396000f3fe",
       "bodyBytecodeHash": "84efc2344d80d003036271ecf294f438b6e03001e89e30334ed07af7343402ad",
       "localBytecodeHash": "cf1df2221e28788fb36c76ff403d5da6e340073fb2d4c8e35d03b4cc789dabc3",
@@ -104,97 +104,97 @@
           "contract": "Pausable",
           "path": "contracts/Pausable.sol",
           "label": "pauser",
-          "astId": 1710,
+          "astId": 1709,
           "type": "t_address",
-          "src": "931:21:9"
+          "src": "858:21:9"
         },
         {
           "contract": "Pausable",
           "path": "contracts/Pausable.sol",
           "label": "paused",
-          "astId": 1712,
+          "astId": 1711,
           "type": "t_bool",
-          "src": "958:18:9"
+          "src": "885:18:9"
         },
         {
           "contract": "Blacklistable",
           "path": "contracts/Blacklistable.sol",
           "label": "blacklister",
-          "astId": 1434,
+          "astId": 813,
           "type": "t_address",
-          "src": "373:26:6"
+          "src": "373:26:5"
         },
         {
           "contract": "Blacklistable",
           "path": "contracts/Blacklistable.sol",
           "label": "blacklisted",
-          "astId": 1438,
+          "astId": 817,
           "type": "t_mapping<t_bool>",
-          "src": "405:45:6"
+          "src": "405:45:5"
         },
         {
-          "contract": "BEP20",
-          "path": "contracts/BEP20.sol",
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
           "label": "_balances",
-          "astId": 828,
+          "astId": 1096,
           "type": "t_mapping<t_uint256>",
-          "src": "611:46:5"
+          "src": "608:46:8"
         },
         {
-          "contract": "BEP20",
-          "path": "contracts/BEP20.sol",
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
           "label": "_allowances",
-          "astId": 834,
+          "astId": 1102,
           "type": "t_mapping<t_uint256>",
-          "src": "663:69:5"
+          "src": "660:69:8"
         },
         {
-          "contract": "BEP20",
-          "path": "contracts/BEP20.sol",
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
           "label": "_totalSupply",
-          "astId": 836,
+          "astId": 1104,
           "type": "t_uint256",
-          "src": "738:28:5"
+          "src": "735:28:8"
         },
         {
-          "contract": "BEP20",
-          "path": "contracts/BEP20.sol",
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
           "label": "_name",
-          "astId": 838,
+          "astId": 1106,
           "type": "t_string",
-          "src": "772:20:5"
+          "src": "769:20:8"
         },
         {
-          "contract": "BEP20",
-          "path": "contracts/BEP20.sol",
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
           "label": "_symbol",
-          "astId": 840,
+          "astId": 1108,
           "type": "t_string",
-          "src": "798:22:5"
+          "src": "795:22:8"
         },
         {
-          "contract": "BEP20",
-          "path": "contracts/BEP20.sol",
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
           "label": "_decimals",
-          "astId": 842,
+          "astId": 1110,
           "type": "t_uint8",
-          "src": "826:23:5"
+          "src": "823:23:8"
         },
         {
-          "contract": "BEP20",
-          "path": "contracts/BEP20.sol",
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
           "label": "_owner",
-          "astId": 844,
+          "astId": 1112,
           "type": "t_address",
-          "src": "856:22:5"
+          "src": "853:22:8"
         },
         {
-          "contract": "BEP20",
-          "path": "contracts/BEP20.sol",
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
           "label": "_mintable",
-          "astId": 852,
+          "astId": 1120,
           "type": "t_bool",
-          "src": "974:22:5"
+          "src": "971:22:8"
         }
       ],
       "warnings": {
@@ -208,19 +208,12 @@
   },
   "solidityLibs": {},
   "proxies": {
-    "ngnt/BEP20": [
+    "ngnt/NGNT": [
       {
-        "address": "0xAa969300a3AB35c0a760Af77e1598502Ac96263e",
+        "address": "0x0d1D43CeDFEBA724cd4Ab822Dd7931fd2af5eD52",
         "version": "0.0.1",
-        "implementation": "0xaEC2B3d4Af264a919003d2C36B1b4AcffC771476",
-        "admin": "0xD24327b5F3804bC041C0F49907aBa175A60cB310",
-        "kind": "Upgradeable"
-      },
-      {
-        "address": "0x9f2c0E0749d1a0908300f5e9c4876e4CE287F6A2",
-        "version": "0.0.1",
-        "implementation": "0xaEC2B3d4Af264a919003d2C36B1b4AcffC771476",
-        "admin": "0xD24327b5F3804bC041C0F49907aBa175A60cB310",
+        "implementation": "0xd8E3a0dbF2a71512FEF82eeC225B9a74837a5F8a",
+        "admin": "0x74C93c746bc94515f851686090c1601d23250E79",
         "kind": "Upgradeable"
       }
     ]
@@ -228,6 +221,6 @@
   "manifestVersion": "2.2",
   "version": "0.0.1",
   "proxyAdmin": {
-    "address": "0xD24327b5F3804bC041C0F49907aBa175A60cB310"
+    "address": "0x74C93c746bc94515f851686090c1601d23250E79"
   }
 }
