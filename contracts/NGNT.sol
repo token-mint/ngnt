@@ -40,7 +40,6 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         string memory symbol,
         string memory currency,
         uint8 decimals,
-        //uint256 initialSupply,
         address _masterMinter,
         address _pauser,
         address _blacklister,
@@ -80,6 +79,22 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     modifier onlyMasterMinter() {
         require(_msgSender() == masterMinter);
         _;
+    }
+
+    /**
+     * @dev Get minter allowance for an account
+     * @param minter The address of the minter
+     */
+    function minterAllowance(address minter) public view returns (uint256) {
+        return minterAllowed[minter];
+    }
+
+    /**
+     * @dev Checks if account is a minter
+     * @param account The address to check
+    */
+    function isMinter(address account) public view returns (bool) {
+        return minters[account];
     }
 
     /**
@@ -192,7 +207,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      *
      * - `spender` cannot be the zero address.
      */
-    function approve(address spender, uint256 amount) external override returns (bool) {
+    function approve(address spender, uint256 amount) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(spender) external override returns (bool) {
         _approve(_msgSender(), spender, amount);
         return true;
     }

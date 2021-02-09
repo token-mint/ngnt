@@ -1,11 +1,11 @@
 {
   "contracts": {
     "NGNT": {
-      "address": "0x2b6385018d93051285dC7aBD600404a466083727",
-      "constructorCode": "608060405234801561001057600080fd5b50611cbe806100206000396000f3fe",
-      "bodyBytecodeHash": "2304220a5891dca743d7cfb23167569048267bcf78ce1957aa9c8b0add99558f",
-      "localBytecodeHash": "dd7eb4a964f90a46b4afe7f6d6cb42d903e1a7922b04d8e788c1bb87f84fed0e",
-      "deployedBytecodeHash": "dd7eb4a964f90a46b4afe7f6d6cb42d903e1a7922b04d8e788c1bb87f84fed0e",
+      "address": "0xD309e118C2a183f4E88Fc695B37972ca712DE572",
+      "constructorCode": "608060405234801561001057600080fd5b50611dd2806100206000396000f3fe",
+      "bodyBytecodeHash": "b1e83e037e0927515b0a9e30074874c1eec019495ab5a3aaeed61ed520dd40dd",
+      "localBytecodeHash": "8e321f9db2c40050007162de1706d3ac4ce98db603ad17eca1401f20b8a830a3",
+      "deployedBytecodeHash": "8e321f9db2c40050007162de1706d3ac4ce98db603ad17eca1401f20b8a830a3",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -104,7 +104,7 @@
           "contract": "Pausable",
           "path": "contracts/Pausable.sol",
           "label": "pauser",
-          "astId": 1954,
+          "astId": 1987,
           "type": "t_address",
           "src": "858:23:9"
         },
@@ -112,7 +112,7 @@
           "contract": "Pausable",
           "path": "contracts/Pausable.sol",
           "label": "paused",
-          "astId": 1956,
+          "astId": 1989,
           "type": "t_bool",
           "src": "887:20:9"
         },
@@ -276,6 +276,13 @@
         "address": "0xD98D4D037fDf098b347345D362b6b3Cc2F47E43F",
         "version": "0.0.1",
         "implementation": "0x2b6385018d93051285dC7aBD600404a466083727",
+        "admin": "0xa3d704f8bFF32eF2D9c37Fe6b701132bfcaE9992",
+        "kind": "Upgradeable"
+      },
+      {
+        "address": "0x4e19083E8503ed2bfe247A51e6290e6a55de01CA",
+        "version": "0.0.1",
+        "implementation": "0xD309e118C2a183f4E88Fc695B37972ca712DE572",
         "admin": "0xa3d704f8bFF32eF2D9c37Fe6b701132bfcaE9992",
         "kind": "Upgradeable"
       }
