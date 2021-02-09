@@ -12,6 +12,7 @@
   "dependencies": {
     "@0x/contracts-utils": "^3.2.4",
     "@openzeppelin/cli": "^2.5.3",
+    "@openzeppelin/contracts-ethereum-package": "^3.0.0",
     "@openzeppelin/contracts-upgradeable": "^3.4.0",
     "@openzeppelin/gsn-provider": "^0.1.11",
     "@openzeppelin/network": "^0.2.10",

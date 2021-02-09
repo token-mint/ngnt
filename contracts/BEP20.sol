@@ -1,12 +1,16 @@
 pragma solidity ^0.6.0;
 
 import "./IBEP20.sol";
-//import "@openzeppelin/contracts-upgradeable/GSN/ContextUpgradeable.sol";
+import './Blacklistable.sol';
+import './Pausable.sol';
+
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol";
+//import "@openzeppelin/contracts-upgradeable/GSN/GSNRecipientUpgradeable.sol";
+//import "@openzeppelin/contracts-ethereum-package/contracts/GSN/GSNRecipient.sol";
+//import "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol";
 
-contract BEP20 is OwnableUpgradeable, IBEP20{
+contract BEP20 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     using SafeMathUpgradeable for uint256;
 
     mapping (address => uint256) private _balances;

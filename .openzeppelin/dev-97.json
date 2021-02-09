@@ -1,11 +1,11 @@
 {
   "contracts": {
     "BEP20": {
-      "address": "0xc68635AFefCf86e7e6DC967062648395F8Ac096a",
-      "constructorCode": "608060405234801561001057600080fd5b50611427806100206000396000f3fe",
-      "bodyBytecodeHash": "8a7ed156f5eae12224b49a69a0a26e784832e69159a77e0d46cbd304d64b7007",
-      "localBytecodeHash": "5c74493ce30bb391a25dd4b5bb79515d56967518e68f3e0b5231aa6d34691621",
-      "deployedBytecodeHash": "5c74493ce30bb391a25dd4b5bb79515d56967518e68f3e0b5231aa6d34691621",
+      "address": "0xaEC2B3d4Af264a919003d2C36B1b4AcffC771476",
+      "constructorCode": "608060405234801561001057600080fd5b506118e2806100206000396000f3fe",
+      "bodyBytecodeHash": "84efc2344d80d003036271ecf294f438b6e03001e89e30334ed07af7343402ad",
+      "localBytecodeHash": "cf1df2221e28788fb36c76ff403d5da6e340073fb2d4c8e35d03b4cc789dabc3",
+      "deployedBytecodeHash": "cf1df2221e28788fb36c76ff403d5da6e340073fb2d4c8e35d03b4cc789dabc3",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -35,6 +35,12 @@
           "length": "49",
           "kind": "array",
           "label": "uint256[49]"
+        },
+        "t_mapping<t_bool>": {
+          "id": "t_mapping<t_bool>",
+          "valueType": "t_bool",
+          "label": "mapping(key => bool)",
+          "kind": "mapping"
         },
         "t_mapping<t_uint256>": {
           "id": "t_mapping<t_uint256>",
@@ -95,68 +101,100 @@
           "src": "2506:25:0"
         },
         {
+          "contract": "Pausable",
+          "path": "contracts/Pausable.sol",
+          "label": "pauser",
+          "astId": 1710,
+          "type": "t_address",
+          "src": "931:21:9"
+        },
+        {
+          "contract": "Pausable",
+          "path": "contracts/Pausable.sol",
+          "label": "paused",
+          "astId": 1712,
+          "type": "t_bool",
+          "src": "958:18:9"
+        },
+        {
+          "contract": "Blacklistable",
+          "path": "contracts/Blacklistable.sol",
+          "label": "blacklister",
+          "astId": 1434,
+          "type": "t_address",
+          "src": "373:26:6"
+        },
+        {
+          "contract": "Blacklistable",
+          "path": "contracts/Blacklistable.sol",
+          "label": "blacklisted",
+          "astId": 1438,
+          "type": "t_mapping<t_bool>",
+          "src": "405:45:6"
+        },
+        {
           "contract": "BEP20",
           "path": "contracts/BEP20.sol",
           "label": "_balances",
-          "astId": 823,
+          "astId": 828,
           "type": "t_mapping<t_uint256>",
-          "src": "439:46:5"
+          "src": "611:46:5"
         },
         {
           "contract": "BEP20",
           "path": "contracts/BEP20.sol",
           "label": "_allowances",
-          "astId": 829,
+          "astId": 834,
           "type": "t_mapping<t_uint256>",
-          "src": "491:69:5"
+          "src": "663:69:5"
         },
         {
           "contract": "BEP20",
           "path": "contracts/BEP20.sol",
           "label": "_totalSupply",
-          "astId": 831,
+          "astId": 836,
           "type": "t_uint256",
-          "src": "566:28:5"
+          "src": "738:28:5"
         },
         {
           "contract": "BEP20",
           "path": "contracts/BEP20.sol",
           "label": "_name",
-          "astId": 833,
+          "astId": 838,
           "type": "t_string",
-          "src": "600:20:5"
+          "src": "772:20:5"
         },
         {
           "contract": "BEP20",
           "path": "contracts/BEP20.sol",
           "label": "_symbol",
-          "astId": 835,
+          "astId": 840,
           "type": "t_string",
-          "src": "626:22:5"
+          "src": "798:22:5"
         },
         {
           "contract": "BEP20",
           "path": "contracts/BEP20.sol",
           "label": "_decimals",
-          "astId": 837,
+          "astId": 842,
           "type": "t_uint8",
-          "src": "654:23:5"
+          "src": "826:23:5"
         },
         {
           "contract": "BEP20",
           "path": "contracts/BEP20.sol",
           "label": "_owner",
-          "astId": 839,
+          "astId": 844,
           "type": "t_address",
-          "src": "684:22:5"
+          "src": "856:22:5"
         },
         {
           "contract": "BEP20",
           "path": "contracts/BEP20.sol",
           "label": "_mintable",
-          "astId": 847,
+          "astId": 852,
           "type": "t_bool",
-          "src": "802:22:5"
+          "src": "974:22:5"
         }
       ],
       "warnings": {
@@ -164,9 +202,7 @@
         "hasSelfDestruct": false,
         "hasDelegateCall": false,
         "hasInitialValuesInDeclarations": false,
-        "uninitializedBaseContracts": [],
-        "storageUncheckedVars": [],
-        "storageDiff": []
+        "uninitializedBaseContracts": []
       }
     }
   },
@@ -174,10 +210,10 @@
   "proxies": {
     "ngnt/BEP20": [
       {
-        "address": "0xA125a19730cCE78EA4C531Ab0765049b90bCC91a",
+        "address": "0xAa969300a3AB35c0a760Af77e1598502Ac96263e",
         "version": "0.0.1",
-        "implementation": "0xc68635AFefCf86e7e6DC967062648395F8Ac096a",
-        "admin": "0x499aEC54E8189a82465459c03D8D635eDdFC353b",
+        "implementation": "0xaEC2B3d4Af264a919003d2C36B1b4AcffC771476",
+        "admin": "0xD24327b5F3804bC041C0F49907aBa175A60cB310",
         "kind": "Upgradeable"
       }
     ]
@@ -185,6 +221,6 @@
   "manifestVersion": "2.2",
   "version": "0.0.1",
   "proxyAdmin": {
-    "address": "0x499aEC54E8189a82465459c03D8D635eDdFC353b"
+    "address": "0xD24327b5F3804bC041C0F49907aBa175A60cB310"
   }
 }

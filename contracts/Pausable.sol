@@ -2,7 +2,6 @@ pragma solidity ^0.6.0;
 
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol";
 
 /**
  * @title Pausable
@@ -19,7 +18,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol";
  * branch: master commit: 3ba876b5e96eec6955733e7e008d85f419ec44a5
  */
 
-contract Pausable is  OwnableUpgradeable{
+contract Pausable is OwnableUpgradeable{
     event Pause();
     event Unpause();
     event PauserChanged(address indexed newAddress);
@@ -27,11 +26,6 @@ contract Pausable is  OwnableUpgradeable{
 
     address public pauser;
     bool public paused;
-
-    // function initialize(address _pauser, bool _paused) public initializer {
-    //     pauser = _pauser;
-    //     paused = _paused;
-    // }
 
     /**
      * @dev Modifier to make a function callable only when the contract is not paused.
@@ -48,6 +42,11 @@ contract Pausable is  OwnableUpgradeable{
         require(msg.sender == pauser);
         _;
     }
+
+    //  modifier onlyOwner() {
+    //     require(msg.sender == owner);
+    //     _;
+    // }
 
     /**
      * @dev called by the owner to pause, triggers stopped state
