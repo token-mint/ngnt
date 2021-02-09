@@ -109,6 +109,44 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         emit MinterConfigured(minter, minterAllowedAmount);
         return true;
     }
+
+     /**
+     * @dev Function to remove a minter
+     * @param minter The address of the minter to remove
+     * @return True if the operation was successful.
+    */
+    function removeMinter(address minter) onlyMasterMinter public returns (bool) {
+        minters[minter] = false;
+        minterAllowed[minter] = 0;
+        emit MinterRemoved(minter);
+        return true;
+    }
+
+     /**
+     * @dev allows the owner to update the master minter address
+     * Validates that caller is an owner
+     * @param _newMasterMinter the new master minter address
+    */
+    function updateMasterMinter(address _newMasterMinter) onlyOwner public {
+        require(_newMasterMinter != address(0));
+        masterMinter = _newMasterMinter;
+        emit MasterMinterChanged(masterMinter);
+    }
+
+     /**
+     * @dev allows the owner to update the gsnFee
+     * Validates that caller is an owner
+     * Validates _newGsnFee is not 0 and that its not more than two times old fee
+     * @param _newGsnFee the new gnsFee
+    */
+    function updateGsnFee(uint256 _newGsnFee) onlyOwner public {
+        require(_newGsnFee != 0);
+        require(_newGsnFee <= gsnFee.mul(2));
+        uint256 oldFee = gsnFee;
+        gsnFee = _newGsnFee;
+        emit GSNFeeUpdated(oldFee, gsnFee);
+    }
+
     /**
     * @dev Leaves the contract without owner. It will not be possible to call
     * `onlyOwner` functions anymore. Can only be called by the current owner.
@@ -188,7 +226,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      * - `recipient` cannot be the zero address.
      * - the caller must have a balance of at least `amount`.
      */
-    function transfer(address recipient, uint256 amount) external override returns (bool) {
+    function transfer(address recipient, uint256 amount) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(recipient)  external override returns (bool) {
         _transfer(_msgSender(), recipient, amount);
         return true;
     }
@@ -224,7 +262,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      * - the caller must have allowance for `sender`'s tokens of at least
      * `amount`.
      */
-    function transferFrom(address sender, address recipient, uint256 amount) external override returns (bool) {
+    function transferFrom(address sender, address recipient, uint256 amount) whenNotPaused notBlacklisted(recipient) notBlacklisted(_msgSender()) notBlacklisted(sender)  external override returns (bool) {
         _transfer(sender, recipient, amount);
         _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "BEP20: transfer amount exceeds allowance"));
         return true;
@@ -242,7 +280,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      *
      * - `spender` cannot be the zero address.
      */
-    function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {
+    function increaseAllowance(address spender, uint256 addedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(spender) public returns (bool) {
         _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));
         return true;
     }
@@ -261,7 +299,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      * - `spender` must have allowance for the caller of at least
      * `subtractedValue`.
      */
-    function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {
+    function decreaseAllowance(address spender, uint256 subtractedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(spender)  public returns (bool) {
         _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "BEP20: decreased allowance below zero"));
         return true;
     }
@@ -293,7 +331,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     /**
    * @dev Burn `amount` tokens and decreasing the total supply.
    */
-    function burn(uint256 amount) public returns (bool) {
+    function burn(uint256 amount)  whenNotPaused onlyMinters notBlacklisted(_msgSender()) public returns (bool) {
         _burn(_msgSender(), amount);
         return true;
     }
@@ -354,6 +392,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
 
         _balances[account] = _balances[account].sub(amount, "BEP20: burn amount exceeds balance");
         _totalSupply = _totalSupply.sub(amount);
+        emit Burn(_msgSender(), amount);
         emit Transfer(account, address(0), amount);
     }
 
