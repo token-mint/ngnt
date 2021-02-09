@@ -10,8 +10,6 @@ import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     using SafeMathUpgradeable for uint256;
 
-    mapping (address => uint256) private _balances;
-    mapping (address => mapping (address => uint256)) private _allowances;
     uint256 private _totalSupply;
     string private _name;
     string private _symbol;
@@ -20,8 +18,20 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     uint256 public gsnFee;
     address public masterMinter;
 
+    mapping(address => bool) internal minters;
+    mapping(address => uint256) internal minterAllowed;
+    mapping (address => uint256) private _balances;
+    mapping (address => mapping (address => uint256)) private _allowances;
+
     address private _owner;
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event Mint(address indexed minter, address indexed to, uint256 amount);
+    event Burn(address indexed burner, uint256 amount);
+    event GSNFeeUpdated(uint256 oldFee, uint256 newFee);
+    event GSNFeeCharged(uint256 fee, address user);
+    event MinterConfigured(address indexed minter, uint256 minterAllowedAmount);
+    event MinterRemoved(address indexed oldMinter);
+    event MasterMinterChanged(address indexed newMasterMinter);
 
     bool private _mintable;
 
@@ -30,7 +40,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         string memory symbol,
         string memory currency,
         uint8 decimals,
-        uint256 initialSupply,
+        //uint256 initialSupply,
         address _masterMinter,
         address _pauser,
         address _blacklister,
@@ -48,13 +58,42 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         _currency = currency;
         masterMinter = _masterMinter;
         pauser = _pauser;
+        paused = true;
         blacklister = _blacklister;
         gsnFee = _gsnFee;
         _owner = owner;
-        _mint(owner, initialSupply);
+        _mint(owner, 0);
         //setOwner(_owner);
     }
 
+    /**
+      * @dev Throws if called by any account other than a minter
+    */
+    modifier onlyMinters() {
+        require(minters[_msgSender()] == true);
+        _;
+    }
+
+    /**
+     * @dev Throws if called by any account other than the masterMinter
+    */
+    modifier onlyMasterMinter() {
+        require(_msgSender() == masterMinter);
+        _;
+    }
+
+    /**
+     * @dev Function to add/update a new minter
+     * @param minter The address of the minter
+     * @param minterAllowedAmount The minting amount allowed for the minter
+     * @return True if the operation was successful.
+    */
+    function configureMinter(address minter, uint256 minterAllowedAmount) whenNotPaused onlyMasterMinter public returns (bool) {
+        minters[minter] = true;
+        minterAllowed[minter] = minterAllowedAmount;
+        emit MinterConfigured(minter, minterAllowedAmount);
+        return true;
+    }
     /**
     * @dev Leaves the contract without owner. It will not be possible to call
     * `onlyOwner` functions anymore. Can only be called by the current owner.
@@ -221,9 +260,18 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      * - `msg.sender` must be the token owner
      * - `_mintable` must be true
      */
-    function mint(uint256 amount) public onlyOwner returns (bool) {
-        require(_mintable, "this token is not mintable");
-        _mint(_msgSender(), amount);
+    function mint(address _to, uint256 _amount) whenNotPaused onlyMinters notBlacklisted(_msgSender()) notBlacklisted(_to) public returns (bool) {
+        require(_to != address(0));
+        require(_amount > 0);
+
+        uint256 mintingAllowedAmount = minterAllowed[_msgSender()];
+        require(_amount <= mintingAllowedAmount);
+
+        _totalSupply = _totalSupply.add(_amount);
+        _balances[_to] = _balances[_to].add(_amount);
+        minterAllowed[_msgSender()] = mintingAllowedAmount.sub(_amount);
+        emit Mint(_msgSender(), _to, _amount);
+        emit Transfer(address(0), _to, _amount);
         return true;
     }
 

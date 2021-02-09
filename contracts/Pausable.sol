@@ -24,8 +24,8 @@ contract Pausable is OwnableUpgradeable{
     event PauserChanged(address indexed newAddress);
 
 
-    address public pauser;
-    bool public paused;
+    address internal pauser;
+    bool internal paused;
 
     /**
      * @dev Modifier to make a function callable only when the contract is not paused.

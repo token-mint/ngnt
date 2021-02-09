@@ -1,11 +1,11 @@
 {
   "contracts": {
     "NGNT": {
-      "address": "0x76d039406F1cBb4f5fFAe399e739d21A8Ad7AC77",
-      "constructorCode": "608060405234801561001057600080fd5b50611aca806100206000396000f3fe",
-      "bodyBytecodeHash": "0dc44f109e69437d276b251b5a570e579e93c7e4197dcacb30babe7d9650edf8",
-      "localBytecodeHash": "e702299ff07f7cc5284399f8b76773efe8c3064be818c437ce37ff79ea1f3a04",
-      "deployedBytecodeHash": "e702299ff07f7cc5284399f8b76773efe8c3064be818c437ce37ff79ea1f3a04",
+      "address": "0x2b6385018d93051285dC7aBD600404a466083727",
+      "constructorCode": "608060405234801561001057600080fd5b50611cbe806100206000396000f3fe",
+      "bodyBytecodeHash": "2304220a5891dca743d7cfb23167569048267bcf78ce1957aa9c8b0add99558f",
+      "localBytecodeHash": "dd7eb4a964f90a46b4afe7f6d6cb42d903e1a7922b04d8e788c1bb87f84fed0e",
+      "deployedBytecodeHash": "dd7eb4a964f90a46b4afe7f6d6cb42d903e1a7922b04d8e788c1bb87f84fed0e",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -42,12 +42,6 @@
           "label": "mapping(key => bool)",
           "kind": "mapping"
         },
-        "t_mapping<t_uint256>": {
-          "id": "t_mapping<t_uint256>",
-          "valueType": "t_uint256",
-          "label": "mapping(key => uint256)",
-          "kind": "mapping"
-        },
         "t_string": {
           "id": "t_string",
           "kind": "elementary",
@@ -57,6 +51,12 @@
           "id": "t_uint8",
           "kind": "elementary",
           "label": "uint8"
+        },
+        "t_mapping<t_uint256>": {
+          "id": "t_mapping<t_uint256>",
+          "valueType": "t_uint256",
+          "label": "mapping(key => uint256)",
+          "kind": "mapping"
         }
       },
       "storage": [
@@ -104,17 +104,17 @@
           "contract": "Pausable",
           "path": "contracts/Pausable.sol",
           "label": "pauser",
-          "astId": 1775,
+          "astId": 1954,
           "type": "t_address",
-          "src": "858:21:9"
+          "src": "858:23:9"
         },
         {
           "contract": "Pausable",
           "path": "contracts/Pausable.sol",
           "label": "paused",
-          "astId": 1777,
+          "astId": 1956,
           "type": "t_bool",
-          "src": "885:18:9"
+          "src": "887:20:9"
         },
         {
           "contract": "Blacklistable",
@@ -135,90 +135,106 @@
         {
           "contract": "V1",
           "path": "contracts/NGNT.sol",
-          "label": "_balances",
-          "astId": 1096,
-          "type": "t_mapping<t_uint256>",
-          "src": "372:46:8"
-        },
-        {
-          "contract": "V1",
-          "path": "contracts/NGNT.sol",
-          "label": "_allowances",
-          "astId": 1102,
-          "type": "t_mapping<t_uint256>",
-          "src": "424:69:8"
-        },
-        {
-          "contract": "V1",
-          "path": "contracts/NGNT.sol",
           "label": "_totalSupply",
-          "astId": 1104,
+          "astId": 1094,
           "type": "t_uint256",
-          "src": "499:28:8"
+          "src": "372:28:8"
         },
         {
           "contract": "V1",
           "path": "contracts/NGNT.sol",
           "label": "_name",
-          "astId": 1106,
+          "astId": 1096,
           "type": "t_string",
-          "src": "533:20:8"
+          "src": "406:20:8"
         },
         {
           "contract": "V1",
           "path": "contracts/NGNT.sol",
           "label": "_symbol",
-          "astId": 1108,
+          "astId": 1098,
           "type": "t_string",
-          "src": "559:22:8"
+          "src": "432:22:8"
         },
         {
           "contract": "V1",
           "path": "contracts/NGNT.sol",
           "label": "_decimals",
-          "astId": 1110,
+          "astId": 1100,
           "type": "t_uint8",
-          "src": "587:23:8"
+          "src": "460:23:8"
         },
         {
           "contract": "V1",
           "path": "contracts/NGNT.sol",
           "label": "_currency",
-          "astId": 1112,
+          "astId": 1102,
           "type": "t_string",
-          "src": "616:23:8"
+          "src": "489:23:8"
         },
         {
           "contract": "V1",
           "path": "contracts/NGNT.sol",
           "label": "gsnFee",
-          "astId": 1114,
+          "astId": 1104,
           "type": "t_uint256",
-          "src": "645:21:8"
+          "src": "518:21:8"
         },
         {
           "contract": "V1",
           "path": "contracts/NGNT.sol",
           "label": "masterMinter",
-          "astId": 1116,
+          "astId": 1106,
           "type": "t_address",
-          "src": "672:27:8"
+          "src": "545:27:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "minters",
+          "astId": 1110,
+          "type": "t_mapping<t_bool>",
+          "src": "579:41:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "minterAllowed",
+          "astId": 1114,
+          "type": "t_mapping<t_uint256>",
+          "src": "626:50:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_balances",
+          "astId": 1118,
+          "type": "t_mapping<t_uint256>",
+          "src": "682:46:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_allowances",
+          "astId": 1124,
+          "type": "t_mapping<t_uint256>",
+          "src": "734:69:8"
         },
         {
           "contract": "V1",
           "path": "contracts/NGNT.sol",
           "label": "_owner",
-          "astId": 1118,
+          "astId": 1126,
           "type": "t_address",
-          "src": "706:22:8"
+          "src": "810:22:8"
         },
         {
           "contract": "V1",
           "path": "contracts/NGNT.sol",
           "label": "_mintable",
-          "astId": 1126,
+          "astId": 1174,
           "type": "t_bool",
-          "src": "824:22:8"
+          "src": "1366:22:8"
         }
       ],
       "warnings": {
@@ -236,45 +252,31 @@
   "proxies": {
     "ngnt/NGNT": [
       {
-        "address": "0xC0f365ebDCaC5Bd6FFAF80c048bBA860727F9035",
+        "address": "0xF53b17724b53DD45Aa791DdE418801C5e5624ff7",
         "version": "0.0.1",
-        "implementation": "0x98344368621b7C9475700378a87BD6284666bF02",
-        "admin": "0x29D1283715E5957978f228Fb677eB952AF3ba91E",
+        "implementation": "0x3CAfCFe7aAb27FCab05B04967b62A92886098D47",
+        "admin": "0xa3d704f8bFF32eF2D9c37Fe6b701132bfcaE9992",
         "kind": "Upgradeable"
       },
       {
-        "address": "0xeA253FB87D80cacbF4bE1EaCB2951F032Ad33C2f",
+        "address": "0x71682C873f19EC42cC966d85f4635CcF3A5Ffd48",
         "version": "0.0.1",
-        "implementation": "0xEC999F9477CD4182f54424120061451FC89d2b91",
-        "admin": "0x29D1283715E5957978f228Fb677eB952AF3ba91E",
+        "implementation": "0x3CAfCFe7aAb27FCab05B04967b62A92886098D47",
+        "admin": "0xa3d704f8bFF32eF2D9c37Fe6b701132bfcaE9992",
         "kind": "Upgradeable"
       },
       {
-        "address": "0x138cB92E25524E3cDfA324b7A6610C94e6e69352",
+        "address": "0xaA0e4fC0D0A58a0b533f02F4b997f63f7171FB1F",
         "version": "0.0.1",
-        "implementation": "0xe8326A69bf70a77084eb3A9EBfDdB58B758cD580",
-        "admin": "0x29D1283715E5957978f228Fb677eB952AF3ba91E",
+        "implementation": "0xbF323609504Bc7561acFDb000731956EddB83C60",
+        "admin": "0xa3d704f8bFF32eF2D9c37Fe6b701132bfcaE9992",
         "kind": "Upgradeable"
       },
       {
-        "address": "0xfaFb17Fd74b200e96C4bD78439DFD61c9075a994",
+        "address": "0xD98D4D037fDf098b347345D362b6b3Cc2F47E43F",
         "version": "0.0.1",
-        "implementation": "0x512f6217DA063132b9fB829534615781bA76eF2D",
-        "admin": "0x29D1283715E5957978f228Fb677eB952AF3ba91E",
-        "kind": "Upgradeable"
-      },
-      {
-        "address": "0xefe08157fE10334F9CF15ea259af5DA13Dd5Ddc5",
-        "version": "0.0.1",
-        "implementation": "0xf8451E67AA685531346Df7a32c8369be979bc20a",
-        "admin": "0x29D1283715E5957978f228Fb677eB952AF3ba91E",
-        "kind": "Upgradeable"
-      },
-      {
-        "address": "0x0653E4D1786896EfeB92f41548Ea86764Ca4752A",
-        "version": "0.0.1",
-        "implementation": "0x76d039406F1cBb4f5fFAe399e739d21A8Ad7AC77",
-        "admin": "0x29D1283715E5957978f228Fb677eB952AF3ba91E",
+        "implementation": "0x2b6385018d93051285dC7aBD600404a466083727",
+        "admin": "0xa3d704f8bFF32eF2D9c37Fe6b701132bfcaE9992",
         "kind": "Upgradeable"
       }
     ]
@@ -282,6 +284,6 @@
   "manifestVersion": "2.2",
   "version": "0.0.1",
   "proxyAdmin": {
-    "address": "0x29D1283715E5957978f228Fb677eB952AF3ba91E"
+    "address": "0xa3d704f8bFF32eF2D9c37Fe6b701132bfcaE9992"
   }
 }
