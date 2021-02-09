@@ -6,9 +6,6 @@ import './Pausable.sol';
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
-//import "@openzeppelin/contracts-upgradeable/GSN/GSNRecipientUpgradeable.sol";
-//import "@openzeppelin/contracts-ethereum-package/contracts/GSN/GSNRecipient.sol";
-//import "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol";
 
 contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     using SafeMathUpgradeable for uint256;
@@ -19,30 +16,43 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     string private _name;
     string private _symbol;
     uint8 private _decimals;
+    string public _currency;
+    uint256 public gsnFee;
+    address public masterMinter;
 
     address private _owner;
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     bool private _mintable;
 
-    // /**
-    //  * @dev Throws if called by any account other than the owner.
-    //  */
-    // modifier onlyOwner() override{
-    //     require(_owner == _msgSender(), "Ownable: caller is not the owner");
-    //     _;
-    // }
+     function initialize(
+        string memory name,
+        string memory symbol,
+        string memory currency,
+        uint8 decimals,
+        uint256 initialSupply,
+        address _masterMinter,
+        address _pauser,
+        address _blacklister,
+        address owner,
+        uint256 _gsnFee
+    ) public initializer {
+        require(_masterMinter != address(0));
+        require(_pauser != address(0));
+        require(_blacklister != address(0));
+        require(owner != address(0));
 
-    /**
-     * @dev sets initials supply and the owner
-     */
-    function initialize(string memory name, string memory symbol, uint8 decimals, uint256 amount, bool mintable, address owner) public initializer {
-        _owner = owner;
         _name = name;
         _symbol = symbol;
         _decimals = decimals;
-        _mintable = mintable;
-        _mint(owner, amount);
+        _currency = currency;
+        masterMinter = _masterMinter;
+        pauser = _pauser;
+        blacklister = _blacklister;
+        gsnFee = _gsnFee;
+        _owner = owner;
+        _mint(owner, initialSupply);
+        //setOwner(_owner);
     }
 
     /**
