@@ -28,10 +28,10 @@ contract Pausable is  OwnableUpgradeable{
     address public pauser;
     bool public paused;
 
-    function initialize(address _pauser, bool _paused) public initializer {
-        pauser = _pauser;
-        paused = _paused;
-    }
+    // function initialize(address _pauser, bool _paused) public initializer {
+    //     pauser = _pauser;
+    //     paused = _paused;
+    // }
 
     /**
      * @dev Modifier to make a function callable only when the contract is not paused.
