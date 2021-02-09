@@ -25,9 +25,6 @@ contract BEP20 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
 
     bool private _mintable;
 
-    constructor() public {
-    }
-
     // /**
     //  * @dev Throws if called by any account other than the owner.
     //  */
