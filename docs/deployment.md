@@ -6,7 +6,7 @@ You can read more about the design we're trying to achieve in the [Token Design]
 ### 1. Deploy Gnosis Safe contract
 
 1. Clone https://github.com/Kifen/safe-contracts
-2. Run nom install
+2. Run npm install
 3. Create .env - touch .env, and add MNEMONIC={BSC wallet mnemonic}
 4. Run truffle compile
 5. Deploy gnosis contract on BSC main net (and take note of the contract address):   truffle deploy --network bsctmainnet
