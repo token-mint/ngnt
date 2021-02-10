@@ -1,7 +1,7 @@
 pragma solidity ^0.6.0;
 
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "./Ownable.sol";
 
 /**
  * @title Pausable
@@ -18,7 +18,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
  * branch: master commit: 3ba876b5e96eec6955733e7e008d85f419ec44a5
  */
 
-contract Pausable is OwnableUpgradeable{
+contract Pausable is Ownable{
     event Pause();
     event Unpause();
     event PauserChanged(address indexed newAddress);
