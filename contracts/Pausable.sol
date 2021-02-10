@@ -43,11 +43,6 @@ contract Pausable is OwnableUpgradeable{
         _;
     }
 
-    //  modifier onlyOwner() {
-    //     require(msg.sender == owner);
-    //     _;
-    // }
-
     /**
      * @dev called by the owner to pause, triggers stopped state
      */
