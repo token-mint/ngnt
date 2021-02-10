@@ -19,6 +19,15 @@ module.exports = {
               ),
             networkId: 97,
             gasPrice: 25000000000,
+          },
+          bscmainnet: {
+            provider: () =>
+              new HDWalletProvider(
+                process.env.MNEMONIC,
+                'https://bsc-dataseed.binance.org/'
+              ),
+            networkId: 56,
+            gasPrice: 25000000000,
           }
     },
 
