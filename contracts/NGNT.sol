@@ -58,7 +58,7 @@ contract V1 is Ownable, IBEP20, Pausable, Blacklistable{
         _currency = currency;
         masterMinter = _masterMinter;
         pauser = _pauser;
-        paused = true;
+        paused = false;
         blacklister = _blacklister;
         _owner = owner;
         _mint(owner, initialSupply);
