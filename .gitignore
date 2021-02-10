@@ -6,3 +6,7 @@ git .DS_Store
 contracts/.DS_Store
 .env
 db/
+artifacts/
+.openzeppelin/.session
+.openzeppelin/dev-97.json
+cache/

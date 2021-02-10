@@ -1,9 +1,7 @@
 {
   "manifestVersion": "2.2",
   "contracts": {
-    "NGNT": "NGNT",
-    "LimitedUpgradesProxyAdmin": "LimitedUpgradesProxyAdmin",
-    "V1": "V1"
+    "NGNT": "NGNT"
   },
   "dependencies": {},
   "name": "ngnt",
@@ -12,9 +10,16 @@
     "manager": "openzeppelin",
     "compilerSettings": {
       "optimizer": {
-        "enabled": true
+        "enabled": true,
+        "runs": "200"
       }
     },
-    "solcVersion": "0.5.12"
-  }
+    "solcVersion": "0.6.2",
+    "artifactsDir": "build/contracts",
+    "contractsDir": "contracts",
+    "typechain": {
+      "enabled": false
+    }
+  },
+  "telemetryOptIn": false
 }

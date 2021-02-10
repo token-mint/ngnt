@@ -3,46 +3,37 @@
 This details the steps involved in deploying the NGNT contract using [openzeppelin-cli](https://github.com/OpenZeppelin/openzeppelin-sdk). 
 You can read more about the design we're trying to achieve in the [Token Design](tokendesign.md) 
 
-### 1. Deploy Proxy Admin Contract
+### 1. Deploy Gnosis Safe contract
 
-The [Limited Upgrades Proxy Admin contract](../contracts/LimitedUpgradesProxyAdmin.sol) is one that allows us to limit the amount of times a contract can get upgraded. 
-NGNT will only be upgradeable **once**. You can read more on that [here](../README.md#upgradebility).
-
-This contract will be deployed with the `--minimal` flag because we do not need it to be upgradeable. You can read more about this from the [openzepplin-cli docs](https://docs.openzeppelin.com/sdk/2.5/api/cli#create).
-Upon deployment, the `initalize(address _owner, uint256 allowedUpgrades)` function MUST be called and the arguments should be set as follows:
-
-1. The `_owner` should be an address that will be the transaction sender in step 2 below. This owner address will be able to upgrade the contract.
-2. `allowedUpgrades` should be set to 1.
+1. Clone https://github.com/Kifen/safe-contracts
+2. Run npm install
+3. Create .env - touch .env, and add MNEMONIC={BSC wallet mnemonic}
+4. Run truffle compile
+5. Deploy gnosis contract on BSC main net (and take note of the contract address):   truffle deploy --network bsctmainnet
 
 ### 2. Deploy NGNT Contract
 
-Deploy the NGNT contract using `openzeppelin create` as one would normally do.
-Use `--from` to specify the transaction sender (this should be the same address as the `_owner` in step 1)
+1. Checkout to bep20 branch and run npm install
+2. Create .env - touch .env, and add MNEMONIC={BSC wallet mnemonic}
+3. Run oz compile
+4. Deploy:  oz deploy 
 
-Immediately after, this function 
-```
-initialize(
-    string memory _name, 
-    string memory _symbol, 
-    uint8 _decimals, 
-    address _masterMinter, 
-    address _pauser, 
-    address _blacklister, 
-    address _owner, 
-    uint256 _gsnFee)
-```
+	- 	select upgradeable
+	-	select bscmainnet
+	-	select NGNT
+	-	enter Y
+	- 	select initialize (ensure the parameters match that of NGNT initialize function) 
+	-	Enter the token details as follows:
 
-MUST be called and the arguments set as follows:
+        `_name`: Naira Token
+       `_symbol`: NGNT
+        `_decimals`: 2
+        `_masterMinter`, `_pauser`, `_blacklister`, `_owner` shall be (multisig contract) addresses obtained from Token Mint  Center.
 
-1. `_name`: Naira Token
-2. `_symbol`: NGNT
-3. `_decimals`: 2
-4. `_masterMinter`, `_pauser`, `_blacklister`, `_owner` shall be (multisig contract) addresses obtained from Token Mint Center.
-5. `gsnFee`: 5000
 
-### 3. Set NGNT Contract Admin
-Using [`openzeppelin-cli`'s `set-admin` command](https://docs.openzeppelin.com/sdk/2.5/api/cli#set-admin) to change the admin of
-the NGNT Proxy contract to the address of your `LimitedUpgradesProxyAdmin` deployed in [step 2](#2-deploy-proxy-admin-contract).
+### 3. Set NGNT Contract Admin to GnosisSafe
+- Run: oz set-admin [NGNT proxy address] [address of new admin]
+- Select bscmainnet
 
 Finally, in the `.openzeppelin` folder, there's a `<network>.json` file (if you're deploying to Rinkeby, it'll be `rinkeby.json`).
-Change the value of the `proxyAdmin`'s address (at the bottom of the file) to the address of your deployed `LimitedUpgradesProxyAdmin` contract.
+Change the value of the `proxyAdmin`'s address (at the bottom of the file) to the address of your deployed `GnosisSafe` contract.

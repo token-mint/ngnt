@@ -1,35 +1,29 @@
-pragma solidity 0.5.5;
+pragma solidity ^0.6.0;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol';
-import "@openzeppelin/contracts-ethereum-package/contracts/GSN/GSNRecipient.sol";
-import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
-import "@0x/contracts-utils/contracts/src/LibBytes.sol";
-
-import './Ownable.sol';
+import "./IBEP20.sol";
 import './Blacklistable.sol';
 import './Pausable.sol';
 
-contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
-    using SafeMath for uint256;
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 
-    string public name;
-    string public symbol;
-    uint8 public decimals;
-    string public currency;
+contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
+    using SafeMathUpgradeable for uint256;
+
+    uint256 private _totalSupply;
+    string private _name;
+    string private _symbol;
+    uint8 private _decimals;
+    string public _currency;
     address public masterMinter;
-    bool internal initialized;
 
-    enum GSNErrorCodes {
-        INSUFFICIENT_BALANCE, NOT_ALLOWED
-    }
-
-    uint256 public gsnFee;
-    mapping(address => uint256) internal balances;
-    mapping(address => mapping(address => uint256)) internal allowed;
-    uint256 internal totalSupply_;
     mapping(address => bool) internal minters;
     mapping(address => uint256) internal minterAllowed;
+    mapping (address => uint256) private _balances;
+    mapping (address => mapping (address => uint256)) private _allowances;
 
+    address private _owner;
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     event Mint(address indexed minter, address indexed to, uint256 amount);
     event Burn(address indexed burner, uint256 amount);
     event GSNFeeUpdated(uint256 oldFee, uint256 newFee);
@@ -38,34 +32,34 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     event MinterRemoved(address indexed oldMinter);
     event MasterMinterChanged(address indexed newMasterMinter);
 
-    function initialize(
-        string memory _name,
-        string memory _symbol,
-        string memory _currency,
-        uint8 _decimals,
+    bool private _mintable;
+
+     function initialize(
+        string memory name,
+        string memory symbol,
+        string memory currency,
+        uint8 decimals,
         address _masterMinter,
         address _pauser,
         address _blacklister,
-        address _owner,
-        uint256 _gsnFee
-    ) public {
-        require(!initialized);
+        address owner
+    ) public initializer {
         require(_masterMinter != address(0));
         require(_pauser != address(0));
         require(_blacklister != address(0));
-        require(_owner != address(0));
+        require(owner != address(0));
 
-        GSNRecipient.initialize();
-        name = _name;
-        symbol = _symbol;
-        currency = _currency;
-        decimals = _decimals;
+        _name = name;
+        _symbol = symbol;
+        _decimals = decimals;
+        _currency = currency;
         masterMinter = _masterMinter;
         pauser = _pauser;
+        paused = true;
         blacklister = _blacklister;
-        gsnFee = _gsnFee;
-        setOwner(_owner);
-        initialized = true;
+        _owner = owner;
+        _mint(owner, 0);
+        //setOwner(_owner);
     }
 
     /**
@@ -74,27 +68,6 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     modifier onlyMinters() {
         require(minters[_msgSender()] == true);
         _;
-    }
-
-    /**
-     * @dev Function to mint tokens
-     * @param _to The address that will receive the minted tokens.
-     * @param _amount The amount of tokens to mint. Must be less than or equal to the minterAllowance of the caller.
-     * @return A boolean that indicates if the operation was successful.
-    */
-    function mint(address _to, uint256 _amount) whenNotPaused onlyMinters notBlacklisted(_msgSender()) notBlacklisted(_to) public returns (bool) {
-        require(_to != address(0));
-        require(_amount > 0);
-
-        uint256 mintingAllowedAmount = minterAllowed[_msgSender()];
-        require(_amount <= mintingAllowedAmount);
-
-        totalSupply_ = totalSupply_.add(_amount);
-        balances[_to] = balances[_to].add(_amount);
-        minterAllowed[_msgSender()] = mintingAllowedAmount.sub(_amount);
-        emit Mint(_msgSender(), _to, _amount);
-        emit Transfer(address(0), _to, _amount);
-        return true;
     }
 
     /**
@@ -122,106 +95,6 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
     }
 
     /**
-     * @dev Get allowed amount for an account
-     * @param owner address The account owner
-     * @param spender address The account spender
-    */
-    function allowance(address owner, address spender) public view returns (uint256) {
-        return allowed[owner][spender];
-    }
-
-    /**
-     * @dev Get totalSupply of token
-    */
-    function totalSupply() public view returns (uint256) {
-        return totalSupply_;
-    }
-
-    /**
-     * @dev Get token balance of an account
-     * @param account address The account
-     */
-    function balanceOf(address account) public view returns (uint256) {
-        return balances[account];
-    }
-
-    /**
-     * @dev Adds blacklisted check to approve
-     * @return True if the operation was successful.
-    */
-    function approve(address _spender, uint256 _value) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_spender) public returns (bool) {
-        allowed[_msgSender()][_spender] = _value;
-        emit Approval(_msgSender(), _spender, _value);
-        return true;
-    }
-
-    /**
-     * @dev Adds blacklisted & not paused check to increaseAllowance
-     * @return True if the operation was successful.
-    */
-    function increaseAllowance(address _spender, uint256 _addedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_spender) public returns (bool) {
-        _approve(_msgSender(), _spender, allowed[_msgSender()][_spender].add(_addedValue));
-        return true;
-    }
-
-    /**
-     * @dev Adds blacklisted & not paused check to decreaseAllowance
-     * @return True if the operation was successful.
-    */
-    function decreaseAllowance(address _spender, uint256 _subtractedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_spender) public returns (bool) {
-        _approve(_msgSender(), _spender, allowed[_msgSender()][_spender].sub(_subtractedValue));
-        return true;
-    }
-
-    /**
-     * @dev Sets `amount` as the allowance of `spender` over the `owner`s tokens.
-     *
-     * This is internal function is equivalent to `approve`, and can be used to
-     * e.g. set automatic allowances for certain subsystems, etc.
-     *
-     * Emits an `Approval` event.
-     */
-    function _approve(address owner, address spender, uint256 value) internal {
-        allowed[owner][spender] = value;
-        emit Approval(owner, spender, value);
-    }
-
-    /**
-     * @dev Transfer tokens from one address to another.
-     * @param _from address The address which you want to send tokens from
-     * @param _to address The address which you want to transfer to
-     * @param _value uint256 the amount of tokens to be transferred
-     * @return bool success
-    */
-    function transferFrom(address _from, address _to, uint256 _value) whenNotPaused notBlacklisted(_to) notBlacklisted(_msgSender()) notBlacklisted(_from) public returns (bool) {
-        require(_to != address(0));
-        require(_value <= balances[_from]);
-        require(_value <= allowed[_from][_msgSender()]);
-
-        balances[_from] = balances[_from].sub(_value);
-        balances[_to] = balances[_to].add(_value);
-        allowed[_from][_msgSender()] = allowed[_from][_msgSender()].sub(_value);
-        emit Transfer(_from, _to, _value);
-        return true;
-    }
-
-    /**
-     * @dev transfer token for a specified address
-     * @param _to The address to transfer to.
-     * @param _value The amount to be transferred.
-     * @return bool success
-    */
-    function transfer(address _to, uint256 _value) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(_to) public returns (bool) {
-        require(_to != address(0));
-        require(_value <= balances[_msgSender()]);
-
-        balances[_msgSender()] = balances[_msgSender()].sub(_value);
-        balances[_to] = balances[_to].add(_value);
-        emit Transfer(_msgSender(), _to, _value);
-        return true;
-    }
-
-    /**
      * @dev Function to add/update a new minter
      * @param minter The address of the minter
      * @param minterAllowedAmount The minting amount allowed for the minter
@@ -234,7 +107,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         return true;
     }
 
-    /**
+     /**
      * @dev Function to remove a minter
      * @param minter The address of the minter to remove
      * @return True if the operation was successful.
@@ -246,24 +119,7 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         return true;
     }
 
-    /**
-     * @dev allows a minter to burn some of its own tokens
-     * Validates that caller is a minter and that sender is not blacklisted
-     * amount is less than or equal to the minter's account balance
-     * @param _amount uint256 the amount of tokens to be burned
-    */
-    function burn(uint256 _amount) whenNotPaused onlyMinters notBlacklisted(_msgSender()) public {
-        uint256 balance = balances[_msgSender()];
-        require(_amount > 0);
-        require(balance >= _amount);
-
-        totalSupply_ = totalSupply_.sub(_amount);
-        balances[_msgSender()] = balance.sub(_amount);
-        emit Burn(_msgSender(), _amount);
-        emit Transfer(_msgSender(), address(0), _amount);
-    }
-
-    /**
+     /**
      * @dev allows the owner to update the master minter address
      * Validates that caller is an owner
      * @param _newMasterMinter the new master minter address
@@ -274,77 +130,288 @@ contract V1 is GSNRecipient, Ownable, ERC20, Pausable, Blacklistable {
         emit MasterMinterChanged(masterMinter);
     }
 
-    /**
-     * @dev allows the owner to update the gsnFee
-     * Validates that caller is an owner
-     * Validates _newGsnFee is not 0 and that its not more than two times old fee
-     * @param _newGsnFee the new gnsFee
-    */
-    function updateGsnFee(uint256 _newGsnFee) onlyOwner public {
-        require(_newGsnFee != 0);
-        require(_newGsnFee <= gsnFee.mul(2));
-        uint256 oldFee = gsnFee;
-        gsnFee = _newGsnFee;
-        emit GSNFeeUpdated(oldFee, gsnFee);
-    }
 
     /**
-     * @dev "callback" to determine if a GSN call should be accepted
-     * Validates that call is transfer, approve or transferFrom
-     * Validates that user NGNT balances is enough for the transaction + gsnFee
+    * @dev Leaves the contract without owner. It will not be possible to call
+    * `onlyOwner` functions anymore. Can only be called by the current owner.
+    *
+    * NOTE: Renouncing ownership will leave the contract without an owner,
+    * thereby removing any functionality that is only available to the owner.
     */
-    function acceptRelayedCall(
-        address relay,
-        address from,
-        bytes calldata encodedFunction,
-        uint256 transactionFee,
-        uint256 gasPrice,
-        uint256 gasLimit,
-        uint256 nonce,
-        bytes calldata approvalData,
-        uint256 maxPossibleCharge
-    ) external view returns (uint256, bytes memory) {
-        uint256 userBalance = balanceOf(from);
-
-        bytes4 calldataSelector = LibBytes.readBytes4(encodedFunction, 0);
-
-        if (calldataSelector == this.transfer.selector) {
-            uint256 valuePlusGsnFee = gsnFee.add(uint(LibBytes.readBytes32(encodedFunction, 36)));
-
-            if (userBalance >= valuePlusGsnFee) {
-                return _approveRelayedCall(abi.encode(from));
-            } else {
-                return _rejectRelayedCall(uint256(GSNErrorCodes.INSUFFICIENT_BALANCE));
-            }
-        } else if (calldataSelector == this.transferFrom.selector || calldataSelector == this.approve.selector) {
-            if (userBalance >= gsnFee) {
-                return _approveRelayedCall(abi.encode(from));
-            } else {
-                return _rejectRelayedCall(uint256(GSNErrorCodes.INSUFFICIENT_BALANCE));
-            }
-        } else {
-            return _rejectRelayedCall(uint256(GSNErrorCodes.NOT_ALLOWED));
-        }
-
-    }
-
-    function _preRelayedCall(bytes memory context) internal returns (bytes32) {
-
+    function renounceOwnership() public override onlyOwner {
+        emit OwnershipTransferred(_owner, address(0));
+        _owner = address(0);
     }
 
     /**
-     * @dev "callback" to charge user gsnFee units of NGNT after successful relayed call
-    */
-    function _postRelayedCall(bytes memory context, bool, uint256 actualCharge, bytes32) internal {
-        address from = abi.decode(context, (address));
-
-        balances[from] = balances[from].sub(gsnFee);
-        balances[address(this)] = balances[address(this)].add(gsnFee);
-        emit GSNFeeCharged(gsnFee, from);
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     */
+    function transferOwnership(address newOwner) public override onlyOwner {
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        emit OwnershipTransferred(_owner, newOwner);
+        _owner = newOwner;
     }
 
+    /**
+     * @dev Returns if the token is mintable or not
+     */
+    function mintable() external view returns (bool) {
+        return _mintable;
+    }
+
+    /**
+     * @dev Returns the bep token owner.
+     */
+    function getOwner() external override view returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Returns the token decimals.
+     */
+    function decimals() external override view returns (uint8) {
+        return _decimals;
+    }
+
+    /**
+     * @dev Returns the token symbol.
+     */
+    function symbol() external override view returns (string memory) {
+        return _symbol;
+    }
+
+    /**
+    * @dev Returns the token name.
+    */
+    function name() external override view returns (string memory) {
+        return _name;
+    }
+
+    /**
+     * @dev See {BEP20-totalSupply}.
+     */
+    function totalSupply() external override view returns (uint256) {
+        return _totalSupply;
+    }
+
+    /**
+     * @dev See {BEP20-balanceOf}.
+     */
+    function balanceOf(address account) external override view returns (uint256) {
+        return _balances[account];
+    }
+
+    /**
+     * @dev See {BEP20-transfer}.
+     *
+     * Requirements:
+     *
+     * - `recipient` cannot be the zero address.
+     * - the caller must have a balance of at least `amount`.
+     */
+    function transfer(address recipient, uint256 amount) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(recipient)  external override returns (bool) {
+        _transfer(_msgSender(), recipient, amount);
+        return true;
+    }
+
+    /**
+     * @dev See {BEP20-allowance}.
+     */
+    function allowance(address owner, address spender) external override view returns (uint256) {
+        return _allowances[owner][spender];
+    }
+
+    /**
+     * @dev See {BEP20-approve}.
+     *
+     * Requirements:
+     *
+     * - `spender` cannot be the zero address.
+     */
+    function approve(address spender, uint256 amount) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(spender) external override returns (bool) {
+        _approve(_msgSender(), spender, amount);
+        return true;
+    }
+
+    /**
+     * @dev See {BEP20-transferFrom}.
+     *
+     * Emits an {Approval} event indicating the updated allowance. This is not
+     * required by the EIP. See the note at the beginning of {BEP20};
+     *
+     * Requirements:
+     * - `sender` and `recipient` cannot be the zero address.
+     * - `sender` must have a balance of at least `amount`.
+     * - the caller must have allowance for `sender`'s tokens of at least
+     * `amount`.
+     */
+    function transferFrom(address sender, address recipient, uint256 amount) whenNotPaused notBlacklisted(recipient) notBlacklisted(_msgSender()) notBlacklisted(sender)  external override returns (bool) {
+        _transfer(sender, recipient, amount);
+        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "BEP20: transfer amount exceeds allowance"));
+        return true;
+    }
+
+    /**
+     * @dev Atomically increases the allowance granted to `spender` by the caller.
+     *
+     * This is an alternative to {approve} that can be used as a mitigation for
+     * problems described in {BEP20-approve}.
+     *
+     * Emits an {Approval} event indicating the updated allowance.
+     *
+     * Requirements:
+     *
+     * - `spender` cannot be the zero address.
+     */
+    function increaseAllowance(address spender, uint256 addedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(spender) public returns (bool) {
+        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));
+        return true;
+    }
+
+    /**
+     * @dev Atomically decreases the allowance granted to `spender` by the caller.
+     *
+     * This is an alternative to {approve} that can be used as a mitigation for
+     * problems described in {BEP20-approve}.
+     *
+     * Emits an {Approval} event indicating the updated allowance.
+     *
+     * Requirements:
+     *
+     * - `spender` cannot be the zero address.
+     * - `spender` must have allowance for the caller of at least
+     * `subtractedValue`.
+     */
+    function decreaseAllowance(address spender, uint256 subtractedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(spender)  public returns (bool) {
+        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "BEP20: decreased allowance below zero"));
+        return true;
+    }
+
+    /**
+     * @dev Creates `amount` tokens and assigns them to `msg.sender`, increasing
+     * the total supply.
+     *
+     * Requirements
+     *
+     * - `msg.sender` must be the token owner
+     * - `_mintable` must be true
+     */
+    function mint(address _to, uint256 _amount) whenNotPaused onlyMinters notBlacklisted(_msgSender()) notBlacklisted(_to) public returns (bool) {
+        require(_to != address(0));
+        require(_amount > 0);
+
+        uint256 mintingAllowedAmount = minterAllowed[_msgSender()];
+        require(_amount <= mintingAllowedAmount);
+
+        _totalSupply = _totalSupply.add(_amount);
+        _balances[_to] = _balances[_to].add(_amount);
+        minterAllowed[_msgSender()] = mintingAllowedAmount.sub(_amount);
+        emit Mint(_msgSender(), _to, _amount);
+        emit Transfer(address(0), _to, _amount);
+        return true;
+    }
+
+    /**
+   * @dev Burn `amount` tokens and decreasing the total supply.
+   */
+    function burn(uint256 amount)  whenNotPaused onlyMinters notBlacklisted(_msgSender()) public returns (bool) {
+        _burn(_msgSender(), amount);
+        return true;
+    }
+
+    /**
+     * @dev Moves tokens `amount` from `sender` to `recipient`.
+     *
+     * This is internal function is equivalent to {transfer}, and can be used to
+     * e.g. implement automatic token fees, slashing mechanisms, etc.
+     *
+     * Emits a {Transfer} event.
+     *
+     * Requirements:
+     *
+     * - `sender` cannot be the zero address.
+     * - `recipient` cannot be the zero address.
+     * - `sender` must have a balance of at least `amount`.
+     */
+    function _transfer(address sender, address recipient, uint256 amount) internal {
+        require(sender != address(0), "BEP20: transfer from the zero address");
+        require(recipient != address(0), "BEP20: transfer to the zero address");
+
+        _balances[sender] = _balances[sender].sub(amount, "BEP20: transfer amount exceeds balance");
+        _balances[recipient] = _balances[recipient].add(amount);
+        emit Transfer(sender, recipient, amount);
+    }
+
+    /** @dev Creates `amount` tokens and assigns them to `account`, increasing
+     * the total supply.
+     *
+     * Emits a {Transfer} event with `from` set to the zero address.
+     *
+     * Requirements
+     *
+     * - `to` cannot be the zero address.
+     */
+    function _mint(address account, uint256 amount) internal {
+        require(account != address(0), "BEP20: mint to the zero address");
+
+        _totalSupply = _totalSupply.add(amount);
+        _balances[account] = _balances[account].add(amount);
+        emit Transfer(address(0), account, amount);
+    }
+
+    /**
+     * @dev Destroys `amount` tokens from `account`, reducing the
+     * total supply.
+     *
+     * Emits a {Transfer} event with `to` set to the zero address.
+     *
+     * Requirements
+     *
+     * - `account` cannot be the zero address.
+     * - `account` must have at least `amount` tokens.
+     */
+    function _burn(address account, uint256 amount) internal {
+        require(account != address(0), "BEP20: burn from the zero address");
+
+        _balances[account] = _balances[account].sub(amount, "BEP20: burn amount exceeds balance");
+        _totalSupply = _totalSupply.sub(amount);
+        emit Burn(_msgSender(), amount);
+        emit Transfer(account, address(0), amount);
+    }
+
+    /**
+     * @dev Sets `amount` as the allowance of `spender` over the `owner`s tokens.
+     *
+     * This is internal function is equivalent to `approve`, and can be used to
+     * e.g. set automatic allowances for certain subsystems, etc.
+     *
+     * Emits an {Approval} event.
+     *
+     * Requirements:
+     *
+     * - `owner` cannot be the zero address.
+     * - `spender` cannot be the zero address.
+     */
+    function _approve(address owner, address spender, uint256 amount) internal {
+        require(owner != address(0), "BEP20: approve from the zero address");
+        require(spender != address(0), "BEP20: approve to the zero address");
+
+        _allowances[owner][spender] = amount;
+        emit Approval(owner, spender, amount);
+    }
+
+    /**
+     * @dev Destroys `amount` tokens from `account`.`amount` is then deducted
+     * from the caller's allowance.
+     *
+     * See {_burn} and {_approve}.
+     */
+    function _burnFrom(address account, uint256 amount) internal {
+        _burn(account, amount);
+        _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "BEP20: burn amount exceeds allowance"));
+    }
 }
 
 contract NGNT is V1 {
-
 }

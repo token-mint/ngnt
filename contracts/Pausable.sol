@@ -1,7 +1,7 @@
-pragma solidity 0.5.5;
+pragma solidity ^0.6.0;
 
 
-import "./Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 /**
  * @title Pausable
@@ -18,14 +18,14 @@ import "./Ownable.sol";
  * branch: master commit: 3ba876b5e96eec6955733e7e008d85f419ec44a5
  */
 
-contract Pausable is Ownable {
+contract Pausable is OwnableUpgradeable{
     event Pause();
     event Unpause();
     event PauserChanged(address indexed newAddress);
 
 
-    address public pauser;
-    bool public paused = false;
+    address internal pauser;
+    bool internal paused;
 
     /**
      * @dev Modifier to make a function callable only when the contract is not paused.
