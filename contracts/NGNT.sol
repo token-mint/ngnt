@@ -3,11 +3,11 @@ pragma solidity ^0.6.0;
 import "./IBEP20.sol";
 import './Blacklistable.sol';
 import './Pausable.sol';
+import "./Ownable.sol";
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 
-contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
+contract V1 is Ownable, IBEP20, Pausable, Blacklistable{
     using SafeMathUpgradeable for uint256;
 
     uint256 private _totalSupply;
@@ -16,6 +16,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     uint8 private _decimals;
     string public _currency;
     address public masterMinter;
+    bool internal initialized;
 
     mapping(address => bool) internal minters;
     mapping(address => uint256) internal minterAllowed;
@@ -39,11 +40,13 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         string memory symbol,
         string memory currency,
         uint8 decimals,
+        uint256 initialSupply,
         address _masterMinter,
         address _pauser,
         address _blacklister,
         address owner
-    ) public initializer {
+    ) public  {
+        require(!initialized);
         require(_masterMinter != address(0));
         require(_pauser != address(0));
         require(_blacklister != address(0));
@@ -58,15 +61,16 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         paused = true;
         blacklister = _blacklister;
         _owner = owner;
-        _mint(owner, 0);
-        //setOwner(_owner);
+        _mint(owner, initialSupply);
+        setOwner(_owner);
+        initialized = true;
     }
 
     /**
       * @dev Throws if called by any account other than a minter
     */
     modifier onlyMinters() {
-        require(minters[_msgSender()] == true);
+        require(minters[msg.sender] == true);
         _;
     }
 
@@ -74,7 +78,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      * @dev Throws if called by any account other than the masterMinter
     */
     modifier onlyMasterMinter() {
-        require(_msgSender() == masterMinter);
+        require(msg.sender == masterMinter);
         _;
     }
 
@@ -128,29 +132,6 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         require(_newMasterMinter != address(0));
         masterMinter = _newMasterMinter;
         emit MasterMinterChanged(masterMinter);
-    }
-
-
-    /**
-    * @dev Leaves the contract without owner. It will not be possible to call
-    * `onlyOwner` functions anymore. Can only be called by the current owner.
-    *
-    * NOTE: Renouncing ownership will leave the contract without an owner,
-    * thereby removing any functionality that is only available to the owner.
-    */
-    function renounceOwnership() public override onlyOwner {
-        emit OwnershipTransferred(_owner, address(0));
-        _owner = address(0);
-    }
-
-    /**
-     * @dev Transfers ownership of the contract to a new account (`newOwner`).
-     * Can only be called by the current owner.
-     */
-    function transferOwnership(address newOwner) public override onlyOwner {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
-        emit OwnershipTransferred(_owner, newOwner);
-        _owner = newOwner;
     }
 
     /**
@@ -210,8 +191,8 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      * - `recipient` cannot be the zero address.
      * - the caller must have a balance of at least `amount`.
      */
-    function transfer(address recipient, uint256 amount) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(recipient)  external override returns (bool) {
-        _transfer(_msgSender(), recipient, amount);
+    function transfer(address recipient, uint256 amount) whenNotPaused notBlacklisted(msg.sender) notBlacklisted(recipient)  external override returns (bool) {
+        _transfer(msg.sender, recipient, amount);
         return true;
     }
 
@@ -229,8 +210,8 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      *
      * - `spender` cannot be the zero address.
      */
-    function approve(address spender, uint256 amount) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(spender) external override returns (bool) {
-        _approve(_msgSender(), spender, amount);
+    function approve(address spender, uint256 amount) whenNotPaused notBlacklisted(msg.sender) notBlacklisted(spender) external override returns (bool) {
+        _approve(msg.sender, spender, amount);
         return true;
     }
 
@@ -246,9 +227,9 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      * - the caller must have allowance for `sender`'s tokens of at least
      * `amount`.
      */
-    function transferFrom(address sender, address recipient, uint256 amount) whenNotPaused notBlacklisted(recipient) notBlacklisted(_msgSender()) notBlacklisted(sender)  external override returns (bool) {
+    function transferFrom(address sender, address recipient, uint256 amount) whenNotPaused notBlacklisted(recipient) notBlacklisted(msg.sender) notBlacklisted(sender)  external override returns (bool) {
         _transfer(sender, recipient, amount);
-        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "BEP20: transfer amount exceeds allowance"));
+        _approve(sender, msg.sender, _allowances[sender][msg.sender].sub(amount, "BEP20: transfer amount exceeds allowance"));
         return true;
     }
 
@@ -264,8 +245,8 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      *
      * - `spender` cannot be the zero address.
      */
-    function increaseAllowance(address spender, uint256 addedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(spender) public returns (bool) {
-        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));
+    function increaseAllowance(address spender, uint256 addedValue) whenNotPaused notBlacklisted(msg.sender) notBlacklisted(spender) public returns (bool) {
+        _approve(msg.sender, spender, _allowances[msg.sender][spender].add(addedValue));
         return true;
     }
 
@@ -283,8 +264,8 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      * - `spender` must have allowance for the caller of at least
      * `subtractedValue`.
      */
-    function decreaseAllowance(address spender, uint256 subtractedValue) whenNotPaused notBlacklisted(_msgSender()) notBlacklisted(spender)  public returns (bool) {
-        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "BEP20: decreased allowance below zero"));
+    function decreaseAllowance(address spender, uint256 subtractedValue) whenNotPaused notBlacklisted(msg.sender) notBlacklisted(spender)  public returns (bool) {
+        _approve(msg.sender, spender, _allowances[msg.sender][spender].sub(subtractedValue, "BEP20: decreased allowance below zero"));
         return true;
     }
 
@@ -297,17 +278,17 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      * - `msg.sender` must be the token owner
      * - `_mintable` must be true
      */
-    function mint(address _to, uint256 _amount) whenNotPaused onlyMinters notBlacklisted(_msgSender()) notBlacklisted(_to) public returns (bool) {
+    function mint(address _to, uint256 _amount) whenNotPaused onlyMinters notBlacklisted(msg.sender) notBlacklisted(_to) public returns (bool) {
         require(_to != address(0));
         require(_amount > 0);
 
-        uint256 mintingAllowedAmount = minterAllowed[_msgSender()];
+        uint256 mintingAllowedAmount = minterAllowed[msg.sender];
         require(_amount <= mintingAllowedAmount);
 
         _totalSupply = _totalSupply.add(_amount);
         _balances[_to] = _balances[_to].add(_amount);
-        minterAllowed[_msgSender()] = mintingAllowedAmount.sub(_amount);
-        emit Mint(_msgSender(), _to, _amount);
+        minterAllowed[msg.sender] = mintingAllowedAmount.sub(_amount);
+        emit Mint(msg.sender, _to, _amount);
         emit Transfer(address(0), _to, _amount);
         return true;
     }
@@ -315,8 +296,8 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     /**
    * @dev Burn `amount` tokens and decreasing the total supply.
    */
-    function burn(uint256 amount)  whenNotPaused onlyMinters notBlacklisted(_msgSender()) public returns (bool) {
-        _burn(_msgSender(), amount);
+    function burn(uint256 amount)  whenNotPaused onlyMinters notBlacklisted(msg.sender) public returns (bool) {
+        _burn(msg.sender, amount);
         return true;
     }
 
@@ -376,7 +357,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
 
         _balances[account] = _balances[account].sub(amount, "BEP20: burn amount exceeds balance");
         _totalSupply = _totalSupply.sub(amount);
-        emit Burn(_msgSender(), amount);
+        emit Burn(msg.sender, amount);
         emit Transfer(account, address(0), amount);
     }
 
@@ -409,7 +390,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
      */
     function _burnFrom(address account, uint256 amount) internal {
         _burn(account, amount);
-        _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "BEP20: burn amount exceeds allowance"));
+        _approve(account, msg.sender, _allowances[account][msg.sender].sub(amount, "BEP20: burn amount exceeds allowance"));
     }
 }
 

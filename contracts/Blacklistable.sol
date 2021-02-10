@@ -1,6 +1,6 @@
 pragma solidity ^0.6.0;
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "./Ownable.sol";
 
 /**
  * @title Blacklistable Token
@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
  * From https://github.com/centrehq/centre-tokens
  * branch: master commit: 3ba876b5e96eec6955733e7e008d85f419ec44a5
 */
-contract Blacklistable is OwnableUpgradeable{
+contract Blacklistable is Ownable{
 
     address public blacklister;
     mapping(address => bool) internal blacklisted;
