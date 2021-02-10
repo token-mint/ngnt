@@ -1,0 +1,258 @@
+{
+  "contracts": {
+    "NGNT": {
+      "address": "0x2e35669feCf9D38d327eD362a5941850d7e3802D",
+      "constructorCode": "608060405234801561001057600080fd5b506121fa806100206000396000f3fe",
+      "bodyBytecodeHash": "240915fb1178bb5fb9b88707a574655a77e8783079b7c7565645742ec09f768a",
+      "localBytecodeHash": "5e478423a9aca861f83001121081f6eae29645321b9ff208d3e8bcf2b3b699b4",
+      "deployedBytecodeHash": "5e478423a9aca861f83001121081f6eae29645321b9ff208d3e8bcf2b3b699b4",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        },
+        "t_array:49<t_uint256>": {
+          "id": "t_array:49<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "49",
+          "kind": "array",
+          "label": "uint256[49]"
+        },
+        "t_mapping<t_bool>": {
+          "id": "t_mapping<t_bool>",
+          "valueType": "t_bool",
+          "label": "mapping(key => bool)",
+          "kind": "mapping"
+        },
+        "t_string": {
+          "id": "t_string",
+          "kind": "elementary",
+          "label": "string"
+        },
+        "t_uint8": {
+          "id": "t_uint8",
+          "kind": "elementary",
+          "label": "uint8"
+        },
+        "t_mapping<t_uint256>": {
+          "id": "t_mapping<t_uint256>",
+          "valueType": "t_uint256",
+          "label": "mapping(key => uint256)",
+          "kind": "mapping"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol",
+          "label": "_initialized",
+          "astId": 470,
+          "type": "t_bool",
+          "src": "1212:25:2"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol",
+          "label": "_initializing",
+          "astId": 472,
+          "type": "t_bool",
+          "src": "1340:26:2"
+        },
+        {
+          "contract": "ContextUpgradeable",
+          "path": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+          "label": "__gap",
+          "astId": 805,
+          "type": "t_array:50<t_uint256>",
+          "src": "1173:25:4"
+        },
+        {
+          "contract": "OwnableUpgradeable",
+          "path": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+          "label": "_owner",
+          "astId": 9,
+          "type": "t_address",
+          "src": "720:22:0"
+        },
+        {
+          "contract": "OwnableUpgradeable",
+          "path": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+          "label": "__gap",
+          "astId": 123,
+          "type": "t_array:49<t_uint256>",
+          "src": "2506:25:0"
+        },
+        {
+          "contract": "Pausable",
+          "path": "contracts/Pausable.sol",
+          "label": "pauser",
+          "astId": 2085,
+          "type": "t_address",
+          "src": "858:23:9"
+        },
+        {
+          "contract": "Pausable",
+          "path": "contracts/Pausable.sol",
+          "label": "paused",
+          "astId": 2087,
+          "type": "t_bool",
+          "src": "887:20:9"
+        },
+        {
+          "contract": "Blacklistable",
+          "path": "contracts/Blacklistable.sol",
+          "label": "blacklister",
+          "astId": 813,
+          "type": "t_address",
+          "src": "373:26:5"
+        },
+        {
+          "contract": "Blacklistable",
+          "path": "contracts/Blacklistable.sol",
+          "label": "blacklisted",
+          "astId": 817,
+          "type": "t_mapping<t_bool>",
+          "src": "405:45:5"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_totalSupply",
+          "astId": 1094,
+          "type": "t_uint256",
+          "src": "372:28:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_name",
+          "astId": 1096,
+          "type": "t_string",
+          "src": "406:20:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_symbol",
+          "astId": 1098,
+          "type": "t_string",
+          "src": "432:22:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_decimals",
+          "astId": 1100,
+          "type": "t_uint8",
+          "src": "460:23:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_currency",
+          "astId": 1102,
+          "type": "t_string",
+          "src": "489:23:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "masterMinter",
+          "astId": 1104,
+          "type": "t_address",
+          "src": "518:27:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "minters",
+          "astId": 1108,
+          "type": "t_mapping<t_bool>",
+          "src": "552:41:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "minterAllowed",
+          "astId": 1112,
+          "type": "t_mapping<t_uint256>",
+          "src": "599:50:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_balances",
+          "astId": 1116,
+          "type": "t_mapping<t_uint256>",
+          "src": "655:46:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_allowances",
+          "astId": 1122,
+          "type": "t_mapping<t_uint256>",
+          "src": "707:69:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_owner",
+          "astId": 1124,
+          "type": "t_address",
+          "src": "783:22:8"
+        },
+        {
+          "contract": "V1",
+          "path": "contracts/NGNT.sol",
+          "label": "_mintable",
+          "astId": 1172,
+          "type": "t_bool",
+          "src": "1339:22:8"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": []
+      }
+    }
+  },
+  "solidityLibs": {},
+  "proxies": {
+    "ngnt/NGNT": [
+      {
+        "address": "0x76921FcB063a6BA6F0581A9319FFe14fadFc41f4",
+        "version": "0.0.1",
+        "implementation": "0x2e35669feCf9D38d327eD362a5941850d7e3802D",
+        "admin": "0x8564Ed2384E913c953a36F4F4E0049a1ee9D0F5E",
+        "kind": "Upgradeable"
+      }
+    ]
+  },
+  "manifestVersion": "2.2",
+  "version": "0.0.1",
+  "proxyAdmin": {
+    "address": "0x8564Ed2384E913c953a36F4F4E0049a1ee9D0F5E"
+  }
+}

@@ -15,7 +15,6 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
     string private _symbol;
     uint8 private _decimals;
     string public _currency;
-    uint256 public gsnFee;
     address public masterMinter;
 
     mapping(address => bool) internal minters;
@@ -43,8 +42,7 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         address _masterMinter,
         address _pauser,
         address _blacklister,
-        address owner,
-        uint256 _gsnFee
+        address owner
     ) public initializer {
         require(_masterMinter != address(0));
         require(_pauser != address(0));
@@ -59,7 +57,6 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         pauser = _pauser;
         paused = true;
         blacklister = _blacklister;
-        gsnFee = _gsnFee;
         _owner = owner;
         _mint(owner, 0);
         //setOwner(_owner);
@@ -133,19 +130,6 @@ contract V1 is OwnableUpgradeable, IBEP20, Pausable, Blacklistable{
         emit MasterMinterChanged(masterMinter);
     }
 
-     /**
-     * @dev allows the owner to update the gsnFee
-     * Validates that caller is an owner
-     * Validates _newGsnFee is not 0 and that its not more than two times old fee
-     * @param _newGsnFee the new gnsFee
-    */
-    function updateGsnFee(uint256 _newGsnFee) onlyOwner public {
-        require(_newGsnFee != 0);
-        require(_newGsnFee <= gsnFee.mul(2));
-        uint256 oldFee = gsnFee;
-        gsnFee = _newGsnFee;
-        emit GSNFeeUpdated(oldFee, gsnFee);
-    }
 
     /**
     * @dev Leaves the contract without owner. It will not be possible to call
