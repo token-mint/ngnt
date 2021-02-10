@@ -1,11 +1,11 @@
 {
   "contracts": {
     "NGNT": {
-      "address": "0xB954A7B22c60C4ec0dDb62AE117ED5d8E90ad31a",
-      "constructorCode": "608060405234801561001057600080fd5b5061221e806100206000396000f3fe",
-      "bodyBytecodeHash": "8b7341325fa48db326aa301f8b7c7e50ad5bd02f0e780458c272bab408aece41",
-      "localBytecodeHash": "0cff591bd55251625c705fece7cf22d5e9fb1a29253af5c0d7947884872ef83d",
-      "deployedBytecodeHash": "0cff591bd55251625c705fece7cf22d5e9fb1a29253af5c0d7947884872ef83d",
+      "address": "0x2BB5e04ae8191051d900707116c23fBA03B5d59e",
+      "constructorCode": "608060405234801561001057600080fd5b50612394806100206000396000f3fe",
+      "bodyBytecodeHash": "9d3f47fa87987a8f848a4475fd9242f602350a41e9b751726b38e3dd844b7140",
+      "localBytecodeHash": "1ad56a66f2045f7db26548028b646c0f6ef44343c2f2ad305b3fb5ff7a46a79e",
+      "deployedBytecodeHash": "1ad56a66f2045f7db26548028b646c0f6ef44343c2f2ad305b3fb5ff7a46a79e",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -104,7 +104,7 @@
           "contract": "Pausable",
           "path": "contracts/Pausable.sol",
           "label": "pauser",
-          "astId": 2093,
+          "astId": 2129,
           "type": "t_address",
           "src": "858:23:9"
         },
@@ -112,7 +112,7 @@
           "contract": "Pausable",
           "path": "contracts/Pausable.sol",
           "label": "paused",
-          "astId": 2095,
+          "astId": 2131,
           "type": "t_bool",
           "src": "887:20:9"
         },
@@ -290,6 +290,20 @@
         "address": "0xEBA552130b411B1b3e5620322e9b591655354354",
         "version": "0.0.1",
         "implementation": "0xB954A7B22c60C4ec0dDb62AE117ED5d8E90ad31a",
+        "admin": "0xa3d704f8bFF32eF2D9c37Fe6b701132bfcaE9992",
+        "kind": "Upgradeable"
+      },
+      {
+        "address": "0x06aee17bf6133532597E0f56E4005e4A0f37daFa",
+        "version": "0.0.1",
+        "implementation": "0x2BB5e04ae8191051d900707116c23fBA03B5d59e",
+        "admin": "0x7729a98854Cb0ECF027B67a93Af254c8d90BBdA7",
+        "kind": "Upgradeable"
+      },
+      {
+        "address": "0x5Ac4021d71899FF737437747a7938aaBdb96D0F7",
+        "version": "0.0.1",
+        "implementation": "0x2BB5e04ae8191051d900707116c23fBA03B5d59e",
         "admin": "0xa3d704f8bFF32eF2D9c37Fe6b701132bfcaE9992",
         "kind": "Upgradeable"
       }

@@ -1,0 +1,839 @@
+{
+  "version": "3",
+  "log": [
+    {
+      "OwnableUpgradeable": {
+        "inherit": [
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:20"
+            },
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "__gap",
+              "type": "t_array(t_uint256)49_storage",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:74"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_array(t_uint256)49_storage": {
+              "label": "uint256[49]"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "SafeMathUpgradeable": {
+        "version": {
+          "withMetadata": "d3a4476b75c026e8d9bbed81654061649a311b181457195885469832327709ac",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "Initializable": {
+        "inherit": [],
+        "libraries": [
+          "AddressUpgradeable"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol:25"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol:30"
+            }
+          ],
+          "types": {
+            "t_bool": {
+              "label": "bool"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "AddressUpgradeable": {
+        "version": {
+          "withMetadata": "f73a96aa2b0f0b82a92012c7b6433186d0772ec61915cef02079408561873edc",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "ContextUpgradeable": {
+        "inherit": [
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "ContextUpgradeable",
+              "label": "__gap",
+              "type": "t_array(t_uint256)50_storage",
+              "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:31"
+            }
+          ],
+          "types": {
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "Blacklistable": {
+        "version": {
+          "withMetadata": "c3cf3b7af97d86318c5a5228b0b2863d12d7293c24fd456d621ed2ac00d0bdd7",
+          "withoutMetadata": "110d48aac7b1c3593f6bce0bf42f126c738665bd0c053cff827ebaf1e9e571e4",
+          "linkedWithoutMetadata": "110d48aac7b1c3593f6bce0bf42f126c738665bd0c053cff827ebaf1e9e571e4"
+        },
+        "inherit": [
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Blacklistable",
+              "label": "blacklister",
+              "type": "t_address",
+              "src": "contracts/Blacklistable.sol:13"
+            },
+            {
+              "contract": "Blacklistable",
+              "label": "blacklisted",
+              "type": "t_mapping(t_address,t_bool)",
+              "src": "contracts/Blacklistable.sol:14"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)"
+            },
+            "t_bool": {
+              "label": "bool"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "IBEP20": {
+        "inherit": [],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "Migrations": {
+        "version": {
+          "withMetadata": "451d3e66ddd505b81e38dc80a9d3fe4188635b50cd545d6302d1cb0df633b33d",
+          "withoutMetadata": "973ebd9ab784120768f763e055876eb9cf18226b284c29195ca1bad43e60f09a",
+          "linkedWithoutMetadata": "973ebd9ab784120768f763e055876eb9cf18226b284c29195ca1bad43e60f09a"
+        },
+        "inherit": [],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Migrations",
+            "src": "contracts/Migrations.sol:7"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Migrations",
+              "label": "owner",
+              "type": "t_address",
+              "src": "contracts/Migrations.sol:4"
+            },
+            {
+              "contract": "Migrations",
+              "label": "last_completed_migration",
+              "type": "t_uint256",
+              "src": "contracts/Migrations.sol:5"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "NGNT": {
+        "version": {
+          "withMetadata": "20b08f53a78b0d37fee3b4331e5e5c31ff031f9e0e8ffab209833e14d48f95f0",
+          "withoutMetadata": "bd7a90c659bb876ba31401a086cdf97435bc541765b4342f6b7c33f3bc1ebb75",
+          "linkedWithoutMetadata": "bd7a90c659bb876ba31401a086cdf97435bc541765b4342f6b7c33f3bc1ebb75"
+        },
+        "inherit": [
+          "V1",
+          "Blacklistable",
+          "Pausable",
+          "IBEP20",
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "V1": {
+        "version": {
+          "withMetadata": "850c0508caa6b55c1290618670593a35f5393808719dfbdb983b5b3275041001",
+          "withoutMetadata": "bd7a90c659bb876ba31401a086cdf97435bc541765b4342f6b7c33f3bc1ebb75",
+          "linkedWithoutMetadata": "bd7a90c659bb876ba31401a086cdf97435bc541765b4342f6b7c33f3bc1ebb75"
+        },
+        "inherit": [
+          "Blacklistable",
+          "Pausable",
+          "IBEP20",
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [
+          "SafeMathUpgradeable"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "V1",
+              "label": "_totalSupply",
+              "type": "t_uint256",
+              "src": "contracts/NGNT.sol:13"
+            },
+            {
+              "contract": "V1",
+              "label": "_name",
+              "type": "t_string_storage",
+              "src": "contracts/NGNT.sol:14"
+            },
+            {
+              "contract": "V1",
+              "label": "_symbol",
+              "type": "t_string_storage",
+              "src": "contracts/NGNT.sol:15"
+            },
+            {
+              "contract": "V1",
+              "label": "_decimals",
+              "type": "t_uint8",
+              "src": "contracts/NGNT.sol:16"
+            },
+            {
+              "contract": "V1",
+              "label": "_currency",
+              "type": "t_string_storage",
+              "src": "contracts/NGNT.sol:17"
+            },
+            {
+              "contract": "V1",
+              "label": "gsnFee",
+              "type": "t_uint256",
+              "src": "contracts/NGNT.sol:18"
+            },
+            {
+              "contract": "V1",
+              "label": "masterMinter",
+              "type": "t_address",
+              "src": "contracts/NGNT.sol:19"
+            },
+            {
+              "contract": "V1",
+              "label": "minters",
+              "type": "t_mapping(t_address,t_bool)",
+              "src": "contracts/NGNT.sol:21"
+            },
+            {
+              "contract": "V1",
+              "label": "minterAllowed",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts/NGNT.sol:22"
+            },
+            {
+              "contract": "V1",
+              "label": "_balances",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts/NGNT.sol:23"
+            },
+            {
+              "contract": "V1",
+              "label": "_allowances",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "src": "contracts/NGNT.sol:24"
+            },
+            {
+              "contract": "V1",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "contracts/NGNT.sol:26"
+            },
+            {
+              "contract": "V1",
+              "label": "_mintable",
+              "type": "t_bool",
+              "src": "contracts/NGNT.sol:36"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_uint8": {
+              "label": "uint8"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "Pausable": {
+        "version": {
+          "withMetadata": "c214d897849a87e51f7e0a16c9d363b1e5ca42dcf2422d0a21d5048726966120",
+          "withoutMetadata": "052af2fa467a3980a6c5764c43d6b03315da484687ef8d029d649bbf1d816788",
+          "linkedWithoutMetadata": "052af2fa467a3980a6c5764c43d6b03315da484687ef8d029d649bbf1d816788"
+        },
+        "inherit": [
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Pausable",
+              "label": "pauser",
+              "type": "t_address",
+              "src": "contracts/Pausable.sol:27"
+            },
+            {
+              "contract": "Pausable",
+              "label": "paused",
+              "type": "t_bool",
+              "src": "contracts/Pausable.sol:28"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_bool": {
+              "label": "bool"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      }
+    },
+    {
+      "OwnableUpgradeable": {
+        "inherit": [
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:20"
+            },
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "__gap",
+              "type": "t_array(t_uint256)49_storage",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:74"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_array(t_uint256)49_storage": {
+              "label": "uint256[49]"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "SafeMathUpgradeable": {
+        "version": {
+          "withMetadata": "d3a4476b75c026e8d9bbed81654061649a311b181457195885469832327709ac",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "Initializable": {
+        "inherit": [],
+        "libraries": [
+          "AddressUpgradeable"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol:25"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol:30"
+            }
+          ],
+          "types": {
+            "t_bool": {
+              "label": "bool"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "AddressUpgradeable": {
+        "version": {
+          "withMetadata": "f73a96aa2b0f0b82a92012c7b6433186d0772ec61915cef02079408561873edc",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "ContextUpgradeable": {
+        "inherit": [
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "ContextUpgradeable",
+              "label": "__gap",
+              "type": "t_array(t_uint256)50_storage",
+              "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:31"
+            }
+          ],
+          "types": {
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "Blacklistable": {
+        "version": {
+          "withMetadata": "c3cf3b7af97d86318c5a5228b0b2863d12d7293c24fd456d621ed2ac00d0bdd7",
+          "withoutMetadata": "110d48aac7b1c3593f6bce0bf42f126c738665bd0c053cff827ebaf1e9e571e4",
+          "linkedWithoutMetadata": "110d48aac7b1c3593f6bce0bf42f126c738665bd0c053cff827ebaf1e9e571e4"
+        },
+        "inherit": [
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Blacklistable",
+              "label": "blacklister",
+              "type": "t_address",
+              "src": "contracts/Blacklistable.sol:13"
+            },
+            {
+              "contract": "Blacklistable",
+              "label": "blacklisted",
+              "type": "t_mapping(t_address,t_bool)",
+              "src": "contracts/Blacklistable.sol:14"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)"
+            },
+            "t_bool": {
+              "label": "bool"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "IBEP20": {
+        "inherit": [],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "Migrations": {
+        "version": {
+          "withMetadata": "451d3e66ddd505b81e38dc80a9d3fe4188635b50cd545d6302d1cb0df633b33d",
+          "withoutMetadata": "973ebd9ab784120768f763e055876eb9cf18226b284c29195ca1bad43e60f09a",
+          "linkedWithoutMetadata": "973ebd9ab784120768f763e055876eb9cf18226b284c29195ca1bad43e60f09a"
+        },
+        "inherit": [],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Migrations",
+            "src": "contracts/Migrations.sol:7"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Migrations",
+              "label": "owner",
+              "type": "t_address",
+              "src": "contracts/Migrations.sol:4"
+            },
+            {
+              "contract": "Migrations",
+              "label": "last_completed_migration",
+              "type": "t_uint256",
+              "src": "contracts/Migrations.sol:5"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "NGNT": {
+        "version": {
+          "withMetadata": "20b08f53a78b0d37fee3b4331e5e5c31ff031f9e0e8ffab209833e14d48f95f0",
+          "withoutMetadata": "bd7a90c659bb876ba31401a086cdf97435bc541765b4342f6b7c33f3bc1ebb75",
+          "linkedWithoutMetadata": "bd7a90c659bb876ba31401a086cdf97435bc541765b4342f6b7c33f3bc1ebb75"
+        },
+        "inherit": [
+          "V1",
+          "Blacklistable",
+          "Pausable",
+          "IBEP20",
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "V1": {
+        "version": {
+          "withMetadata": "850c0508caa6b55c1290618670593a35f5393808719dfbdb983b5b3275041001",
+          "withoutMetadata": "bd7a90c659bb876ba31401a086cdf97435bc541765b4342f6b7c33f3bc1ebb75",
+          "linkedWithoutMetadata": "bd7a90c659bb876ba31401a086cdf97435bc541765b4342f6b7c33f3bc1ebb75"
+        },
+        "inherit": [
+          "Blacklistable",
+          "Pausable",
+          "IBEP20",
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [
+          "SafeMathUpgradeable"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "V1",
+              "label": "_totalSupply",
+              "type": "t_uint256",
+              "src": "contracts/NGNT.sol:13"
+            },
+            {
+              "contract": "V1",
+              "label": "_name",
+              "type": "t_string_storage",
+              "src": "contracts/NGNT.sol:14"
+            },
+            {
+              "contract": "V1",
+              "label": "_symbol",
+              "type": "t_string_storage",
+              "src": "contracts/NGNT.sol:15"
+            },
+            {
+              "contract": "V1",
+              "label": "_decimals",
+              "type": "t_uint8",
+              "src": "contracts/NGNT.sol:16"
+            },
+            {
+              "contract": "V1",
+              "label": "_currency",
+              "type": "t_string_storage",
+              "src": "contracts/NGNT.sol:17"
+            },
+            {
+              "contract": "V1",
+              "label": "gsnFee",
+              "type": "t_uint256",
+              "src": "contracts/NGNT.sol:18"
+            },
+            {
+              "contract": "V1",
+              "label": "masterMinter",
+              "type": "t_address",
+              "src": "contracts/NGNT.sol:19"
+            },
+            {
+              "contract": "V1",
+              "label": "minters",
+              "type": "t_mapping(t_address,t_bool)",
+              "src": "contracts/NGNT.sol:21"
+            },
+            {
+              "contract": "V1",
+              "label": "minterAllowed",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts/NGNT.sol:22"
+            },
+            {
+              "contract": "V1",
+              "label": "_balances",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts/NGNT.sol:23"
+            },
+            {
+              "contract": "V1",
+              "label": "_allowances",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "src": "contracts/NGNT.sol:24"
+            },
+            {
+              "contract": "V1",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "contracts/NGNT.sol:26"
+            },
+            {
+              "contract": "V1",
+              "label": "_mintable",
+              "type": "t_bool",
+              "src": "contracts/NGNT.sol:36"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_uint8": {
+              "label": "uint8"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      },
+      "Pausable": {
+        "version": {
+          "withMetadata": "c214d897849a87e51f7e0a16c9d363b1e5ca42dcf2422d0a21d5048726966120",
+          "withoutMetadata": "052af2fa467a3980a6c5764c43d6b03315da484687ef8d029d649bbf1d816788",
+          "linkedWithoutMetadata": "052af2fa467a3980a6c5764c43d6b03315da484687ef8d029d649bbf1d816788"
+        },
+        "inherit": [
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Pausable",
+              "label": "pauser",
+              "type": "t_address",
+              "src": "contracts/Pausable.sol:27"
+            },
+            {
+              "contract": "Pausable",
+              "label": "paused",
+              "type": "t_bool",
+              "src": "contracts/Pausable.sol:28"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_bool": {
+              "label": "bool"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      }
+    }
+  ]
+}
