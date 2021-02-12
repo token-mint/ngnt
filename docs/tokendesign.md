@@ -10,7 +10,7 @@ and a way to upgrade the contract so that bugs can be fixed or features added.
 - `pauser` - pause the contract, which prevents all transfers, minting, and burning
 - `blacklister` - prevent all transfers to or from a particular address, and prevents that address from minting or burning
 - `owner` - re-assign any of the roles except for `admin`
-- `admin` - upgrade the contract. This can happen only **once**.
+- `admin` - upgrade the contract.
 
 Token Mint Center will control the addresses of all roles except for minters, which will be controlled by the entities that 
 Token Mint Center elects to make minters. **All non-minter addresses** will have multisig contracts deployed on them (using the [Gnosis MultiSigWallet](https://github.com/gnosis/MultiSigWallet)).
